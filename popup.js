@@ -31,16 +31,20 @@ function readerViewEmail() {
     .readerView.readerView img{max-width:100%}
     .readerView.readerView table {display:block;}
     .readerView.readerView table :where(td, th, tr, tbody){display:contents; width:100%}
-    .readerView.readerView :is(
-      table:has(th[scope]),
-      table:has(th+td):has(tr+tr),
-      table:has(th):has(td + td)
+    .readerView.readerView table:not([role="presentation"]):not([role="none"]):is(
+      :has(>thead ~ tbody),
+      :has(>tbody ~ tfoot),
+      :has(>tbody>tr>th[scope]),
+      :has(>tbody>tr>th+td):has(>tbody>tr+tr),
+      :has(>tbody>tr>th):has(>tbody>tr>td + td)
     ),
-    .readerView.readerView :is(
-      table:has(th[scope]),
-      table:has(th+td):has(tr+tr),
-      table:has(th):has(td + td)
-    ) :where(td, th, tr, tbody){
+    .readerView.readerView table:not([role="presentation"]):not([role="none"]):is(
+      :has(>thead ~ tbody),
+      :has(>tbody ~ tfoot),
+      :has(>tbody>tr>th[scope]),
+      :has(>tbody>tr>th+td):has(>tbody>tr+tr),
+      :has(>tbody>tr>th):has(>tbody>tr>td + td)
+    ) :where(tbody, tbody > tr,  tbody > tr > td,  tbody > tr > th){
       display:revert;
       width:revert;
       border:1px solid;
@@ -103,7 +107,8 @@ function readerViewEmail() {
     };
     // For AOL
     if (window.location.hostname === "mail.aol.com"){
-      wrapper = document.querySelectorAll(".AOLWebSuite > div[id]");
+      // 2 selectors for AOL, as teh new version uses the same as Yahoo
+      wrapper = document.querySelectorAll(".AOLWebSuite > div[id], .msg-body");
     };
 
     // Insert stylesheet

@@ -17,11 +17,35 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log(defaultStyles);
 });
 
-// chrome.storage.onChanged.addListener(function (changes, namespace) {
-//   for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-//     console.log(
-//       `Storage key "${key}" in namespace "${namespace}" changed.`,
-//       `Old value was "${JSON.stringify(oldValue)}", new value is "${JSON.stringify(newValue)}".`
-//     );
-//   }
-// });
+// Wrap in an onInstalled callback in order to avoid unnecessary work
+// every time the background script is run
+chrome.runtime.onInstalled.addListener(() => {
+  // Page actions are disabled by default and enabled on select tabs
+  chrome.action.disable();
+
+  // Clear all rules to ensure only our expected rules are set
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+    // Declare a rule to enable the action on supported webmail pages
+    let webmailPage = {
+      conditions: [
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: {hostSuffix: 'mail.google.com'},
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: {hostSuffix: 'mail.yahoo.com'},
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: {hostSuffix: 'mail.aol.com'},
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: {hostSuffix: 'outlook.live.com'},
+        })
+      ],
+      actions: [new chrome.declarativeContent.ShowAction()],
+    };
+
+    // Finally, apply our new array of rules
+    let rules = [webmailPage];
+    chrome.declarativeContent.onPageChanged.addRules(rules);
+  });
+});
