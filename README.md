@@ -13,6 +13,8 @@ If there is another web based email client you would like to see listed, let me 
 
 ## Styles
 There are a number of styles applied to the reader view, these can be adjusted to your own preference.
+![screen shot of styles menu, showing controls for Background, Width, Text colour, Link colour, Text align, Font family, Font size, Line height, Word spacing, Letter spacing, Block images](https://user-images.githubusercontent.com/7871206/191954116-81b92466-b72a-4241-b68b-06ab92171781.png)
+
 ### Background
 Set a background colour to sit behind the content
 ###  Width
