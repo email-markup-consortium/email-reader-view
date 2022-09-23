@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
+    <button id="readerView">Apply reader View</button>
+    <button id="readerViewOff">Disable reader View</button>
+    <form id="optionsForm">
+      <fieldset>
+        <legend>Page settings</legend>
+        <div class="selectStyles">
+          <label>
+            <span>Background: <span id="backgroundColorValue"></span></span>
+            <span>
+              <input type="color" name="backgroundColor" id="backgroundColor">
+            </span>
+          </label>
+          <label>
+            <span>Width: <span id="maxWidthValue"></span></span>
+            <span>
+              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Text settings</legend>
+        <div class="selectStyles">
+          <label>
+            <span>Text colour: <span id="colorValue"></span></span>
+            <span>
+              <input type="color" name="color" id="color">
+            </span>
+          </label>
+          <label>
+            <span>Link colour: <span id="linkColorValue"></span></span>
+            <span>
+              <input type="color" name="linkColor" id="linkColor">
+            </span>
+          </label>
+          <label>
+            <span>Text align: <span id="textAlignValue"></span></span>
+            <span>
+              <select name="textAlign" id="textAlign">
+                <option value="start">start</option>
+                <option value="center">center</option>
+                <option value="end">end</option>
+              </select>
+            </span>
+          </label>
+          <label>
+            <span>Font family: <span id="fontFamilyValue"></span></span>
+            <span>
+              <select name="fontFamily" id="fontFamily">
+                <option value="serif">serif</option>
+                <option value="sans-serif">sans-serif</option>
+                <option value="monospace">monospace</option>
+                <option value="cursive">cursive</option>
+              </select>
+            </span>
+          </label>
+          <label>
+            <span>Font size: <span id="fontSizeValue"></span></span>
+            <span>
+              <input type="range" name="fontSize" id="fontSize" min=".5" max="3" step=".25">
+            </span>
+          </label>
+          <label>
+            <span>Line height: <span id="lineHeightValue"></span></span>
+            <span>
+              <input type="range" name="lineHeight" id="lineHeight" min="1" max="2" step=".1">
+            </span>
+          </label>
+          <label>
+            <span>Word spacing: <span id="wordSpacingValue"></span></span>
+            <span>
+              <input type="range" name="wordSpacing" id="wordSpacing" min="0" max="1" step=".1">
+            </span>
+          </label>
+          <label>
+            <span>Letter spacing: <span id="letterSpacingValue"></span></span>
+            <span>
+              <input type="range" name="letterSpacing" id="letterSpacing"  min="0" max=".3" step=".02">
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Image settings</legend>
+        <div class="selectStyles">
+          <label>
+            <span>Block images: <span id="blockImagesValue"></span></span>
+            <span>
+              <input type="checkbox" name="blockImages" id="blockImages">
+            </span>
+          </label>
+        </div>
+      </fieldset>
+    </form>
+    <script src="popup.js"></script>
+  </body>
+</html>

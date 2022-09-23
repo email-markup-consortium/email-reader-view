@@ -1,0 +1,40 @@
+body{
+  width:30em;
+  max-width: 100%;
+}
+h1 img{
+  height: 1.2em;
+  margin-left: .5em;
+}
+fieldset {
+  margin-top: 1.5em;
+}
+legend{
+  font-weight: bold;
+  font-size:1.2em;
+}
+.selectStyles{
+  display:table;
+  border-spacing:.5em;
+  width:100%;
+}
+.selectStyles label{
+  display:table-row;
+}
+.selectStyles label > span{
+  display:table-cell;
+  vertical-align: top;
+  width: 50%;
+  height: 2em;
+}
+input[type="range"],
+input[type="color"],
+select{
+  width: 100%;
+}
+@media (prefers-color-scheme: dark) {
+  body{
+    background:#333;
+    color: #eee;
+  }
+}
