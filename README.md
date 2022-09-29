@@ -4,7 +4,7 @@ Thanks for looking at this reader view browser extension, built for web based em
 ## Set up
 This is not yet available on the [Chrome extensions web store](https://chrome.google.com/webstore/category/extensions), however if you want to try it out before it's available, you can.
 1. Download this GitHub Repo.  
-	* If you're not too familiar with GitHub an easy way to do this is to click on the green `code` button near the top right of the repo page and select [download zip](/archive/refs/heads/main.zip). Once downloaded, unzip that file.
+	* If you're not too familiar with GitHub an easy way to do this is to click on the green `code` button near the top right of the repo page and select [download zip](https://github.com/email-markup-consortium/email-reader-view/archive/refs/heads/main.zip). Once downloaded, unzip that file.
 2. In the Chrome browser, navigate to the extensions page [chrome://extensions/](chrome://extensions/)
 3. In the top right corner, click the `Developer mode` button
 4. A button will appear in the top left of the screen, to `Load Unpacked`, click this button.
