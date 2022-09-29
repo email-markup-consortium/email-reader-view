@@ -1,6 +1,19 @@
 # Email Reader View
 Thanks for looking at this reader view browser extension, built for web based email clients. The idea is it will take the main content from an HTML email and replace the styles with something simpler, making it easier to read. It also allows  the user to adjust these simple styles to suit their own personal preferences.
 
+## Set up
+This is not yet available on the [Chrome extensions web store](https://chrome.google.com/webstore/category/extensions), however if you want to try it out before it's available, you can.
+1. Download this GitHub Repo.  
+	* If you're not too familiar with GitHub an easy way to do this is to click on the green `code` button near the top right of the repo page and select [download zip](/archive/refs/heads/main.zip). Once downloaded, unzip that file.
+2. In the Chrome browser, navigate to the extensions page [chrome://extensions/](chrome://extensions/)
+3. In the top right corner, click the `Developer mode` button
+4. A button will appear in the top left of the screen, to `Load Unpacked`, click this button.
+5. Select the `email-reader-view` folder that you downloaded in step 1, and you'll see it appear in your list of browser extensions.
+6. Click the puzzle piece icon ![](https://user-images.githubusercontent.com/7871206/193024825-a9f31d07-fd66-4982-a711-17c2d5e04898.png)
+ in the chrome toolbar to see your extensions and click the pin next to the Email Reader view, it will now stay showing in the tool bar.
+7. Open an email in one of the [supported email clients](supported-email-clients) and click the Email Reader View icon ![](https://user-images.githubusercontent.com/7871206/193025100-02a17935-082e-4207-b7e5-dae9cf08cc12.png)
+ and then the `apply reader view` button.
+
 ## Supported email clients
 Currently, this works with;
 * Gmail
@@ -38,13 +51,4 @@ Sets the space between letters.
 ### Block images
 Hides images and shows their alt text.
 
-## Set up
-This is not yet available on the [Chrome extensions web store](https://chrome.google.com/webstore/category/extensions), however if you want to try it out before it's available, you can.
-* Download this GitHub Repo.  
-	* If you're not too familiar with GitHub the easiest way to do this is to click on the green `code` button and select download zip. Once downloaded, unzip that file.
-* In the Chrome browser, navigate to the extensions page chrome://extensions/
-* In the top right corner, click the `Developer mode` button
-* A button will appear, to `Load Unpacked`, click this button.
-* Select the email-reader-view folder that you downloaded, and you'll see it appear in your list of browser extensions.
-* Click the puzzle piece in the chrome toolbar to see your extensions and click the pin next to the Email Reader view, it will now stay showing in the tool bar.
-* Open an email in one of the supported email clients and click the Email Reader View icon and then the `apply reader view` button.
+
