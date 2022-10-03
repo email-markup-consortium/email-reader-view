@@ -50,7 +50,8 @@ function readerViewEmail() {
       border:1px solid;
       border-spacing:.2em
     }
-    .readerView.readerView .blockedImage:not(:empty) {
+    .readerView.readerView .blockedImage:not(:empty),
+    .readerView.readerView a .blockedImage {
       border: 1px dashed;
       padding: 1em;
       display:inline-block
@@ -111,10 +112,18 @@ function readerViewEmail() {
       wrapper = document.querySelectorAll(".AOLWebSuite > div[id], .msg-body");
     };
 
+
     // Insert stylesheet
     for (let item of wrapper) {
-      item.classList.add("readerView");
-      item.insertAdjacentHTML("beforebegin", styleSheet);
+      // Ignore AMP emails
+      const iframe = item.querySelector('iframe');
+      if (iframe === null){
+        item.classList.add("readerView");
+        item.insertAdjacentHTML("beforebegin", styleSheet);
+      } else {
+        alert("AMP emails not yet supported");
+        break;
+      }
     }
     // Pull out all the elements in the email
     let email = document.querySelectorAll(".readerView *");
@@ -129,7 +138,7 @@ function readerViewEmail() {
       if (item.hasAttribute("data-emoji")){
         let alt = item.getAttribute("alt");
         item.insertAdjacentHTML("beforebegin", alt);
-        item.remove()
+        item.setAttribute("hidden", "");
       }
       // Replace images with alt text
       if (defaultStyles.blockImages){
@@ -159,7 +168,7 @@ function readerViewEmail() {
           item.removeAttribute(attribute)
         }
       }
-    };
+    }; 
   });
 }
 function readerViewOfff() {

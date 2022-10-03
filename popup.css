@@ -32,6 +32,13 @@ input[type="color"],
 select{
   width: 100%;
 }
+.emc-credit{
+  text-align: end;
+}
+.emc-credit img{
+  height: 2em;
+  vertical-align: middle;
+}
 @media (prefers-color-scheme: dark) {
   body{
     background:#333;
