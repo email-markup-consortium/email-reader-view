@@ -30,7 +30,7 @@ function readerViewEmail() {
     .readerView.readerView [hidden]{display:none}
     .readerView.readerView img{max-width:100%}
     .readerView.readerView table {display:block;}
-    .readerView.readerView table :where(td, th, tr, tbody){display:contents; width:100%}
+    .readerView.readerView table:not([role="table"]):not([role="grid"]) :where(tbody > tr > td, tbody > tr > th, tbody > tr, tbody){display:contents; width:100%}
     .readerView.readerView table:not([role="presentation"]):not([role="none"]):is(
       :has(>thead ~ tbody),
       :has(>tbody ~ tfoot),
@@ -44,14 +44,13 @@ function readerViewEmail() {
       :has(>tbody>tr>th[scope]),
       :has(>tbody>tr>th+td):has(>tbody>tr+tr),
       :has(>tbody>tr>th):has(>tbody>tr>td + td)
-    ) :where(tbody, tbody > tr,  tbody > tr > td,  tbody > tr > th){
+    ) :where(tbody, thead, tfoot, tbody > tr,  tbody > tr > td,  tbody > tr > th,   thead > tr > th){
       display:revert;
       width:revert;
       border:1px solid;
       border-spacing:.2em
     }
-    .readerView.readerView .blockedImage:not(:empty),
-    .readerView.readerView a .blockedImage {
+    .readerView.readerView .blockedImage:not(:empty){
       border: 1px dashed;
       padding: 1em;
       display:inline-block
@@ -134,6 +133,9 @@ function readerViewEmail() {
       if (style.display === "none"){
         item.setAttribute("hidden", "");
       }
+      if (item.getAttribute("aria-hidden") == 'true'){
+        item.setAttribute("hidden", "");
+      }
       // Replace Gmail emoji with regular ones
       if (item.hasAttribute("data-emoji")){
         let alt = item.getAttribute("alt");
@@ -144,8 +146,17 @@ function readerViewEmail() {
       if (defaultStyles.blockImages){
         if (item.tagName == "IMG" && !item.hasAttribute('hidden')) {
           let alt = item.getAttribute("alt");
+          if (alt == null|| alt.trim() == ''){
+            alt = '' 
+          }
           let fauxImg = document.createElement("span")
-          fauxImg.innerText = alt;
+          // If linked image with no alt text, show href as alt
+          if (item.parentNode.tagName == 'A' && item.parentNode.children.length == '1'){
+            if (alt == ''){
+              alt = item.parentNode.getAttribute("href");
+            }
+          }
+          fauxImg.innerText = alt.trim();
           fauxImg.classList.add("blockedImage");
           item.insertAdjacentHTML("beforebegin", fauxImg.outerHTML);
         }
