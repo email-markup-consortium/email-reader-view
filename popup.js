@@ -26,11 +26,21 @@ function readerViewEmail() {
   chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
     // Create styleSheet to revert styles and add our own
     let styleSheet = `<style data-readerview>
-    .readerView.readerView * {all: revert}
-    .readerView.readerView [hidden]{display:none}
+    .readerView.readerView * {
+      all: revert
+    }
+    .readerView.readerView [hidden]{
+      display:none !important
+    }
     .readerView.readerView img{max-width:100%}
     .readerView.readerView table {display:block;}
-    .readerView.readerView table:not([role="table"]):not([role="grid"]) :where(tbody > tr > td, tbody > tr > th, tbody > tr, tbody){display:contents; width:100%}
+    .readerView.readerView table:not([role="table"]):not([role="grid"]) :where(tbody, thead, tfoot, th, td){
+      display:contents;
+    }
+    .readerView.readerView table:not([role="table"]):not([role="grid"]) > * > tr{
+      display:block;
+      margin:1em 0;
+    }
     .readerView.readerView table:not([role="presentation"]):not([role="none"]):is(
       :has(>thead ~ tbody),
       :has(>tbody ~ tfoot),
@@ -44,11 +54,19 @@ function readerViewEmail() {
       :has(>tbody>tr>th[scope]),
       :has(>tbody>tr>th+td):has(>tbody>tr+tr),
       :has(>tbody>tr>th):has(>tbody>tr>td + td)
-    ) :where(tbody, thead, tfoot, tbody > tr,  tbody > tr > td,  tbody > tr > th,   thead > tr > th){
+    ) :where(tbody, thead, tfoot, tbody > tr, thead > tr, tfoot > tr,  tbody > tr > td,  tbody > tr > th,   thead > tr > th, thead > tr > td, tfoot > tr > th, tfoot > tr > td){
       display:revert;
       width:revert;
       border:1px solid;
-      border-spacing:.2em
+      border-spacing:.2em;
+      padding:.2em;
+      word-break: normal;
+    }
+    .readerView.readerView thead::after,
+    .readerView.readerView tfoot::before{
+      content:'';
+      display:block;
+      height:.4em;
     }
     .readerView.readerView .blockedImage:not(:empty){
       border: 1px dashed;
@@ -160,6 +178,10 @@ function readerViewEmail() {
           fauxImg.classList.add("blockedImage");
           item.insertAdjacentHTML("beforebegin", fauxImg.outerHTML);
         }
+      }
+      // Remove spacer table cells 
+      if (item.tagName == "TD" && item.innerHTML.trim() == "&nbsp;" || item.tagName == "TH" && item.innerHTML.trim() == "&nbsp;"){
+        item.innerHTML = "";
       }
       // Replace styling attributes
       replaceAttribute("style")
