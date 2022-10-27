@@ -29,13 +29,14 @@ function readerViewEmail() {
     .readerView.readerView * {
       all: revert
     }
-    .readerView.readerView [hidden]{
+    .readerView.readerView [date-hidden]{
       display:none !important
     }
     .readerView.readerView img{max-width:100%}
     .readerView.readerView table {display:block;}
     .readerView.readerView table:not([role="table"]):not([role="grid"]) :where(tbody, thead, tfoot, th, td){
       display:contents;
+      font-weight:unset;
     }
     .readerView.readerView table:not([role="table"]):not([role="grid"]) > * > tr{
       display:block;
@@ -61,6 +62,7 @@ function readerViewEmail() {
       border-spacing:.2em;
       padding:.2em;
       word-break: normal;
+      font-weight:revert;
     }
     .readerView.readerView thead::after,
     .readerView.readerView tfoot::before{
@@ -71,7 +73,8 @@ function readerViewEmail() {
     .readerView.readerView .blockedImage:not(:empty){
       border: 1px dashed;
       padding: 1em;
-      display:inline-block
+      display:inline-block;
+      overflow-wrap: anywhere;
     }
     .readerView.readerView .blockedImage + img {
         display: none;
@@ -138,7 +141,7 @@ function readerViewEmail() {
         item.classList.add("readerView");
         item.insertAdjacentHTML("beforebegin", styleSheet);
       } else {
-        alert("AMP emails not yet supported");
+        alert("Reader view does not yet support AMP email");
         break;
       }
     }
@@ -149,16 +152,16 @@ function readerViewEmail() {
       // If it's a hidden element, keep it hidden
       let style = window.getComputedStyle(item);
       if (style.display === "none"){
-        item.setAttribute("hidden", "");
+        item.setAttribute("date-hidden", "");
       }
       if (item.getAttribute("aria-hidden") == 'true'){
-        item.setAttribute("hidden", "");
+        item.setAttribute("date-hidden", "");
       }
       // Replace Gmail emoji with regular ones
-      if (item.hasAttribute("data-emoji")){
+      if (item.hasAttribute("data-emoji") && defaultStyles.blockImages == false){
         let alt = item.getAttribute("alt");
-        item.insertAdjacentHTML("beforebegin", alt);
-        item.setAttribute("hidden", "");
+        item.insertAdjacentHTML("beforebegin", '<span data-srv-emoji>' + alt + '</span>');
+        item.setAttribute("date-hidden", "");
       }
       // Replace images with alt text
       if (defaultStyles.blockImages){
@@ -169,7 +172,7 @@ function readerViewEmail() {
           }
           let fauxImg = document.createElement("span")
           // If linked image with no alt text, show href as alt
-          if (item.parentNode.tagName == 'A' && item.parentNode.children.length == '1'){
+          if (item.parentNode.tagName == 'A' && item.parentNode.children.length == '1'  && item.parentNode.textContent.trim() == ''){
             if (alt == ''){
               alt = item.parentNode.getAttribute("href");
             }
@@ -179,8 +182,13 @@ function readerViewEmail() {
           item.insertAdjacentHTML("beforebegin", fauxImg.outerHTML);
         }
       }
-      // Remove spacer table cells 
-      if (item.tagName == "TD" && item.innerHTML.trim() == "&nbsp;" || item.tagName == "TH" && item.innerHTML.trim() == "&nbsp;"){
+      // If a link has no content then show the href
+      if (item.tagName == 'A' && item.innerHTML.trim() == ''){
+        let href = item.getAttribute("href");
+        item.insertAdjacentHTML("afterbegin", href);
+      }
+      // Remove spacer elements, if the only content is a &nbsp;
+      if (item.innerHTML.trim() == "&nbsp;"){
         item.innerHTML = "";
       }
       // Replace styling attributes
@@ -225,6 +233,12 @@ function readerViewOfff() {
         item.setAttribute(attribute, attributeValue);
         item.removeAttribute("data-removed" + attribute)
       }
+    }
+    if (item.hasAttribute("data-hidden")){
+      item.removeAttribute("data-hidden")
+    }
+    if (item.hasAttribute("data-srv-emoji")){
+      item.remove()
     }
   }
 
