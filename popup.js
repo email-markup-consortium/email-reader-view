@@ -1,17 +1,32 @@
-// When the button is clicked, inject readerView into current page
-readerView.addEventListener("click", async () => {
+// invoke the readerview 
+const _tabManager = async (option) => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: readerViewEmail,
+    function: option,
   });
+}
+
+// input events on color input elements, enable reader view
+for(let el of [...document.querySelectorAll('input[type=color]')]){
+  el.addEventListener('input', () => {
+    _tabManager(readerViewEmail)
+  })
+}
+
+// change events on input elements, enable reader view
+document.querySelector('#optionsForm').addEventListener("change", () => {
+  _tabManager(readerViewEmail)
 });
-readerViewOff.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: readerViewOfff,
-  });
+
+// click on button element, enable reader view
+document.querySelector('#readerView').addEventListener("click", () => {
+  _tabManager(readerViewEmail)
+});
+
+// click on button element, disable reader view
+document.querySelector('#readerViewOff').addEventListener("click", () => {
+  _tabManager(readerViewOfff)
 });
 
 // Function will be execueted as a content script inside the current page
@@ -25,7 +40,7 @@ function readerViewEmail() {
   // Get the default styles from background.js
   chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
     // Create styleSheet to revert styles and add our own
-    let styleSheet = `<style data-readerview>
+    let styleSheet = `
     .readerView.readerView * {
       all: revert
     }
@@ -101,7 +116,7 @@ function readerViewEmail() {
       text-align:${defaultStyles.textAlign};
     }
     .readerView.readerView button{display:none} /* Outlook zoom button */
-    </style>`;
+    `;
 
     // Find elements wrapping the email content
     let wrapper = '';
@@ -128,18 +143,24 @@ function readerViewEmail() {
     };
     // For AOL
     if (window.location.hostname === "mail.aol.com"){
-      // 2 selectors for AOL, as teh new version uses the same as Yahoo
+      // 2 selectors for AOL, as the new version uses the same as Yahoo
       wrapper = document.querySelectorAll(".AOLWebSuite > div[id], .msg-body");
     };
 
-
-    // Insert stylesheet
+    // inject empty style element
+    if(!document.querySelector('#emcStyleElement')) {
+      const emcStyleElement = document.createElement('style');
+      emcStyleElement.setAttribute('id', 'emcStyleElement'); // setting [data-readerview] attribute interferes with cleanly appending new styles. needs debugging  
+      [...wrapper][0].parentElement.prepend(emcStyleElement)
+    }
+ 
+    // Insert CSS into style element
     for (let item of wrapper) {
       // Ignore AMP emails
       const iframe = item.querySelector('iframe');
       if (iframe === null){
         item.classList.add("readerView");
-        item.insertAdjacentHTML("beforebegin", styleSheet);
+        document.querySelector('#emcStyleElement').append(styleSheet) // not ideal: append() will increase the styles exponentially on each change, but is a cleaner UX
       } else {
         alert("Reader view does not yet support AMP email");
         break;
@@ -282,7 +303,7 @@ chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
 });
 
 // Listen for changes in the settings form
-optionsForm.addEventListener('change', ({ defaultStyles }) => {
+const _manageDefaultStyles = ({ defaultStyles }) => {
   var backgroundColor = document.getElementById('backgroundColor').value;
   var color= document.getElementById('color').value;
   var textAlign= document.getElementById('textAlign').value;
@@ -308,4 +329,26 @@ optionsForm.addEventListener('change', ({ defaultStyles }) => {
     linkColor:linkColor,
     blockImages:blockImages
   }})
+}
+
+// Listen for specific events
+optionsForm.addEventListener('change', _manageDefaultStyles);
+optionsForm.addEventListener('input', _manageDefaultStyles);
+
+// update form UI values in real time
+optionsForm.addEventListener('input', () => {
+  document.getElementById('backgroundColorValue').textContent = document.querySelector('#backgroundColor').value
+  document.getElementById('colorValue').textContent = document.querySelector('#color').value
+  document.getElementById('linkColorValue').textContent = document.querySelector('#linkColor').value
+});
+
+optionsForm.addEventListener('change', () => {
+  document.getElementById('fontFamilyValue').textContent = document.querySelector('#fontFamily').value
+  document.getElementById('textAlignValue').textContent = document.querySelector('#textAlign').value
+  document.getElementById('maxWidthValue').textContent = document.querySelector('#maxWidth').value
+  document.getElementById('fontSizeValue').textContent = document.querySelector('#fontSize').value
+  document.getElementById('lineHeightValue').textContent = document.querySelector('#lineHeight').value
+  document.getElementById('wordSpacingValue').textContent = document.querySelector('#wordSpacing').value
+  document.getElementById('letterSpacingValue').textContent = document.querySelector('#letterSpacing').value
+  document.getElementById('blockImagesValue').textContent = document.querySelector('#blockImages').checked
 });
