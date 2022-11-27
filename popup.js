@@ -1,3 +1,7 @@
+const _optionsForm = document.querySelector('#optionsForm')
+const _readerView = document.querySelector('#readerView')
+const _readerViewOff = document.querySelector('#readerViewOff')
+
 // invoke the readerview 
 const _tabManager = async (option) => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -15,24 +19,24 @@ for(let el of [...document.querySelectorAll('input[type=color]')]){
 }
 
 // change events on input elements, enable reader view
-document.querySelector('#optionsForm').addEventListener("change", () => {
+_optionsForm.addEventListener('change', () => {
   _tabManager(readerViewEmail)
 });
 
 // click on button element, enable reader view
-document.querySelector('#readerView').addEventListener("click", () => {
+_readerView.addEventListener('click', () => {
   _tabManager(readerViewEmail)
 });
 
 // click on button element, disable reader view
-document.querySelector('#readerViewOff').addEventListener("click", () => {
+_readerViewOff.addEventListener('click', () => {
   _tabManager(readerViewOfff)
 });
 
-// Function will be execueted as a content script inside the current page
+// Function will be executed as a content script inside the current page
 function readerViewEmail() {
   // Remove previously added reader view elements
-  let style = document.querySelectorAll("style[data-readerview], .blockedImage");
+  let style = document.querySelectorAll(".blockedImage");
   for (let item of style) {
     item.remove();
   }
@@ -270,7 +274,7 @@ function readerViewOfff() {
   }
 
   // Remove added reader view elements
-  let style = document.querySelectorAll("style[data-readerview], .blockedImage");
+  let style = document.querySelectorAll(".blockedImage");
   for (let item of style) {
     item.remove();
   }
@@ -332,17 +336,17 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
 }
 
 // Listen for specific events
-optionsForm.addEventListener('change', _manageDefaultStyles);
-optionsForm.addEventListener('input', _manageDefaultStyles);
+_optionsForm.addEventListener('change', _manageDefaultStyles);
+_optionsForm.addEventListener('input', _manageDefaultStyles);
 
 // update form UI values in real time
-optionsForm.addEventListener('input', () => {
+_optionsForm.addEventListener('input', () => {
   document.getElementById('backgroundColorValue').textContent = document.querySelector('#backgroundColor').value
   document.getElementById('colorValue').textContent = document.querySelector('#color').value
   document.getElementById('linkColorValue').textContent = document.querySelector('#linkColor').value
 });
 
-optionsForm.addEventListener('change', () => {
+_optionsForm.addEventListener('change', () => {
   document.getElementById('fontFamilyValue').textContent = document.querySelector('#fontFamily').value
   document.getElementById('textAlignValue').textContent = document.querySelector('#textAlign').value
   document.getElementById('maxWidthValue').textContent = document.querySelector('#maxWidth').value
