@@ -5,6 +5,7 @@ Thanks for looking at this reader view browser extension, built for web based em
 This is not yet available on any browser extensions web store, however if you want to try it out before it's available, you can.
 1. Download this GitHub Repo.  
 	* If you're not too familiar with GitHub an easy way to do this is to click on the green `code` button near the top right of the repo page and select [download zip](https://github.com/email-markup-consortium/email-reader-view/archive/refs/heads/main.zip). Once downloaded, unzip that file.
+	* If you are familiar with GitHub, then pull down a local version of this repo using your prefered method. 
 2. In the Chrome browser, navigate to the extensions page [chrome://extensions/](chrome://extensions/).
 Or if you are using Edge [edge://extensions/](edge://extensions/).
 Or if you are using Opera [opera://extensions](opera://extensions)
