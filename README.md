@@ -15,7 +15,7 @@ Or if you are using Opera [opera://extensions](opera://extensions)
 6. Click the puzzle piece icon ![](https://user-images.githubusercontent.com/7871206/193024825-a9f31d07-fd66-4982-a711-17c2d5e04898.png)
  in the Chrome or Edge toolbar. Or in Opera click the cube icon ![](https://user-images.githubusercontent.com/7871206/193051201-da64f57d-453f-4f38-be0d-917851128739.png)
 . This will show your extensions, then click the pin next to the Email Reader view, it will now stay showing in the tool bar.
-7. Open an email in one of the [supported email clients](supported-email-clients) and click the Email Reader View icon ![](https://user-images.githubusercontent.com/7871206/193025100-02a17935-082e-4207-b7e5-dae9cf08cc12.png)
+7. Open an email in one of the [supported email clients](#supported-email-clients) and click the Email Reader View icon ![](https://user-images.githubusercontent.com/7871206/193025100-02a17935-082e-4207-b7e5-dae9cf08cc12.png)
  and then the `apply reader view` button.
 
 ## Supported email clients
