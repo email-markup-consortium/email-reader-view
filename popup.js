@@ -152,10 +152,10 @@ function readerViewEmail() {
     };
 
     // inject empty style element
-    if(!document.querySelector('#emcStyleElement')) {
-      const emcStyleElement = document.createElement('style');
-      emcStyleElement.setAttribute('id', 'emcStyleElement'); // setting [data-readerview] attribute interferes with cleanly appending new styles. needs debugging  
-      [...wrapper][0].parentElement.prepend(emcStyleElement)
+    if(!document.querySelector('#ervStyleElement')) {
+      const ervStyleElement = document.createElement('style');
+      ervStyleElement.setAttribute('id', 'ervStyleElement'); // setting [data-readerview] attribute interferes with cleanly appending new styles. needs debugging  
+      [...wrapper][0].parentElement.prepend(ervStyleElement)
     }
  
     // Insert CSS into style element
@@ -164,7 +164,7 @@ function readerViewEmail() {
       const iframe = item.querySelector('iframe');
       if (iframe === null){
         item.classList.add("readerView");
-        document.querySelector('#emcStyleElement').append(styleSheet) // not ideal: append() will increase the styles exponentially on each change, but is a cleaner UX
+        document.querySelector('#ervStyleElement').replaceChildren(styleSheet)
       } else {
         alert("Reader view does not yet support AMP email");
         break;
@@ -185,7 +185,7 @@ function readerViewEmail() {
       // Replace Gmail emoji with regular ones
       if (item.hasAttribute("data-emoji") && defaultStyles.blockImages == false){
         let alt = item.getAttribute("alt");
-        item.insertAdjacentHTML("beforebegin", '<span data-srv-emoji>' + alt + '</span>');
+        item.insertAdjacentHTML("beforebegin", '<span data-erv-emoji>' + alt + '</span>');
         item.setAttribute("date-hidden", "");
       }
       // Replace images with alt text
@@ -262,7 +262,7 @@ function readerViewOfff() {
     if (item.hasAttribute("data-hidden")){
       item.removeAttribute("data-hidden")
     }
-    if (item.hasAttribute("data-srv-emoji")){
+    if (item.hasAttribute("data-erv-emoji")){
       item.remove()
     }
   }
