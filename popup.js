@@ -1,23 +1,42 @@
-// When the button is clicked, inject readerView into current page
-readerView.addEventListener("click", async () => {
+const _optionsForm = document.querySelector('#optionsForm')
+const _readerView = document.querySelector('#readerView')
+const _readerViewOff = document.querySelector('#readerViewOff')
+
+// invoke the readerview 
+const _tabManager = async (option) => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: readerViewEmail,
+    function: option,
   });
-});
-readerViewOff.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: readerViewOfff,
-  });
+}
+
+// input events on color input elements, enable reader view
+for(let el of [...document.querySelectorAll('input[type=color]')]){
+  el.addEventListener('input', () => {
+    _tabManager(readerViewEmail)
+  })
+}
+
+// change events on input elements, enable reader view
+_optionsForm.addEventListener('change', () => {
+  _tabManager(readerViewEmail)
 });
 
-// Function will be execueted as a content script inside the current page
+// click on button element, enable reader view
+_readerView.addEventListener('click', () => {
+  _tabManager(readerViewEmail)
+});
+
+// click on button element, disable reader view
+_readerViewOff.addEventListener('click', () => {
+  _tabManager(readerViewOfff)
+});
+
+// Function will be executed as a content script inside the current page
 function readerViewEmail() {
   // Remove previously added reader view elements
-  let style = document.querySelectorAll("style[data-readerview], .blockedImage");
+  let style = document.querySelectorAll(".blockedImage");
   for (let item of style) {
     item.remove();
   }
@@ -25,7 +44,7 @@ function readerViewEmail() {
   // Get the default styles from background.js
   chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
     // Create styleSheet to revert styles and add our own
-    let styleSheet = `<style data-readerview>
+    let styleSheet = `
     .readerView.readerView * {
       all: revert
     }
@@ -101,7 +120,7 @@ function readerViewEmail() {
       text-align:${defaultStyles.textAlign};
     }
     .readerView.readerView button{display:none} /* Outlook zoom button */
-    </style>`;
+    `;
 
     // Find elements wrapping the email content
     let wrapper = '';
@@ -128,18 +147,24 @@ function readerViewEmail() {
     };
     // For AOL
     if (window.location.hostname === "mail.aol.com"){
-      // 2 selectors for AOL, as teh new version uses the same as Yahoo
+      // 2 selectors for AOL, as the new version uses the same as Yahoo
       wrapper = document.querySelectorAll(".AOLWebSuite > div[id], .msg-body");
     };
 
-
-    // Insert stylesheet
+    // inject empty style element
+    if(!document.querySelector('#ervStyleElement')) {
+      const ervStyleElement = document.createElement('style');
+      ervStyleElement.setAttribute('id', 'ervStyleElement'); // setting [data-readerview] attribute interferes with cleanly appending new styles. needs debugging  
+      [...wrapper][0].parentElement.prepend(ervStyleElement)
+    }
+ 
+    // Insert CSS into style element
     for (let item of wrapper) {
       // Ignore AMP emails
       const iframe = item.querySelector('iframe');
       if (iframe === null){
         item.classList.add("readerView");
-        item.insertAdjacentHTML("beforebegin", styleSheet);
+        document.querySelector('#ervStyleElement').replaceChildren(styleSheet)
       } else {
         alert("Reader view does not yet support AMP email");
         break;
@@ -160,7 +185,7 @@ function readerViewEmail() {
       // Replace Gmail emoji with regular ones
       if (item.hasAttribute("data-emoji") && defaultStyles.blockImages == false){
         let alt = item.getAttribute("alt");
-        item.insertAdjacentHTML("beforebegin", '<span data-srv-emoji>' + alt + '</span>');
+        item.insertAdjacentHTML("beforebegin", '<span data-erv-emoji>' + alt + '</span>');
         item.setAttribute("date-hidden", "");
       }
       // Replace images with alt text
@@ -237,7 +262,7 @@ function readerViewOfff() {
     if (item.hasAttribute("data-hidden")){
       item.removeAttribute("data-hidden")
     }
-    if (item.hasAttribute("data-srv-emoji")){
+    if (item.hasAttribute("data-erv-emoji")){
       item.remove()
     }
   }
@@ -249,7 +274,7 @@ function readerViewOfff() {
   }
 
   // Remove added reader view elements
-  let style = document.querySelectorAll("style[data-readerview], .blockedImage");
+  let style = document.querySelectorAll(".blockedImage");
   for (let item of style) {
     item.remove();
   }
@@ -282,7 +307,7 @@ chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
 });
 
 // Listen for changes in the settings form
-optionsForm.addEventListener('change', ({ defaultStyles }) => {
+const _manageDefaultStyles = ({ defaultStyles }) => {
   var backgroundColor = document.getElementById('backgroundColor').value;
   var color= document.getElementById('color').value;
   var textAlign= document.getElementById('textAlign').value;
@@ -308,4 +333,26 @@ optionsForm.addEventListener('change', ({ defaultStyles }) => {
     linkColor:linkColor,
     blockImages:blockImages
   }})
+}
+
+// Listen for specific events
+_optionsForm.addEventListener('change', _manageDefaultStyles);
+_optionsForm.addEventListener('input', _manageDefaultStyles);
+
+// update form UI values in real time
+_optionsForm.addEventListener('input', () => {
+  document.getElementById('backgroundColorValue').textContent = document.querySelector('#backgroundColor').value
+  document.getElementById('colorValue').textContent = document.querySelector('#color').value
+  document.getElementById('linkColorValue').textContent = document.querySelector('#linkColor').value
+});
+
+_optionsForm.addEventListener('change', () => {
+  document.getElementById('fontFamilyValue').textContent = document.querySelector('#fontFamily').value
+  document.getElementById('textAlignValue').textContent = document.querySelector('#textAlign').value
+  document.getElementById('maxWidthValue').textContent = document.querySelector('#maxWidth').value
+  document.getElementById('fontSizeValue').textContent = document.querySelector('#fontSize').value
+  document.getElementById('lineHeightValue').textContent = document.querySelector('#lineHeight').value
+  document.getElementById('wordSpacingValue').textContent = document.querySelector('#wordSpacing').value
+  document.getElementById('letterSpacingValue').textContent = document.querySelector('#letterSpacing').value
+  document.getElementById('blockImagesValue').textContent = document.querySelector('#blockImages').checked
 });
