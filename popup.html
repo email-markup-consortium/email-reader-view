@@ -6,38 +6,47 @@
   <body>
     <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
     <button id="readerView">Apply reader View</button>
+    <button id="readerViewA">Light</button>
+    <button id="readerViewB">Dark</button>
+    <button id="readerViewC">Sepia</button>
     <button id="readerViewOff">Disable reader View</button>
     <form id="optionsForm">
       <fieldset>
-        <legend>Page settings</legend>
+        <legend>Profile settings</legend>
         <div class="selectStyles">
           <label>
-            <span>Background: <span id="backgroundColorValue"></span></span>
+            <span>Name:</span>
             <span>
-              <input type="color" name="backgroundColor" id="backgroundColor">
+              <input type="text" name="nameA" id="nameA">
             </span>
           </label>
           <label>
-            <span>Width: <span id="maxWidthValue"></span></span>
+            <span>Background: <span id="backgroundColorValueA"></span></span>
             <span>
-              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
+              <input type="color" name="backgroundColorA" id="backgroundColorA">
+            </span>
+          </label>
+          <label>
+            <span>Text colour: <span id="colorValueA"></span></span>
+            <span>
+              <input type="color" name="colorA" id="colorA">
+            </span>
+          </label>
+          <label>
+            <span>Link colour: <span id="linkColorValueA"></span></span>
+            <span>
+              <input type="color" name="linkColorA" id="linkColorA">
             </span>
           </label>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Text settings</legend>
+        <legend>General settings</legend>
         <div class="selectStyles">
           <label>
-            <span>Text colour: <span id="colorValue"></span></span>
+            <span>Width: <span id="maxWidthValue"></span></span>
             <span>
-              <input type="color" name="color" id="color">
-            </span>
-          </label>
-          <label>
-            <span>Link colour: <span id="linkColorValue"></span></span>
-            <span>
-              <input type="color" name="linkColor" id="linkColor">
+              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
             </span>
           </label>
           <label>

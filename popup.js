@@ -100,11 +100,11 @@ function readerViewEmail() {
     }
     .readerView.readerView :is(a, a *) {
         text-decoration: underline;
-        color:${defaultStyles.linkColor};
+        color:${defaultStyles.profileA.linkColor};
     }
     .readerView.readerView {
-      background:${defaultStyles.backgroundColor};
-      color: ${defaultStyles.color};
+      background:${defaultStyles.profileA.backgroundColor};
+      color: ${defaultStyles.profileA.color};
       text-align:${defaultStyles.textAlign};
       font-family:${defaultStyles.fontFamily};
       font-size:${defaultStyles.fontSize}rem;
@@ -157,7 +157,7 @@ function readerViewEmail() {
       ervStyleElement.setAttribute('id', 'ervStyleElement'); // setting [data-readerview] attribute interferes with cleanly appending new styles. needs debugging  
       [...wrapper][0].parentElement.prepend(ervStyleElement)
     }
- 
+
     // Insert CSS into style element
     for (let item of wrapper) {
       // Ignore AMP emails
@@ -282,10 +282,16 @@ function readerViewOfff() {
 
 // Pull default styles from background.js and apply to controls in the popup
 chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
-  backgroundColor.value = defaultStyles.backgroundColor;
-  backgroundColorValue.textContent = defaultStyles.backgroundColor;
-  color.value = defaultStyles.color;
-  colorValue.textContent = defaultStyles.color;
+  readerViewA.style.backgroundColor = defaultStyles.profileA.backgroundColor;
+  readerViewA.style.color = defaultStyles.profileA.color;
+  readerViewA.textContent = defaultStyles.profileA.name;
+  backgroundColorA.value = defaultStyles.profileA.backgroundColor;
+  backgroundColorValueA.textContent = defaultStyles.profileA.backgroundColor;
+  colorA.value = defaultStyles.profileA.color;
+  colorValueA.textContent = defaultStyles.profileA.color;
+  linkColorA.value = defaultStyles.profileA.linkColor;
+  linkColorValueA.textContent = defaultStyles.profileA.linkColor;
+
   fontSize.value = defaultStyles.fontSize;
   fontSizeValue.textContent = defaultStyles.fontSize + 'rem';
   textAlign.value = defaultStyles.textAlign;
@@ -300,16 +306,15 @@ chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
   letterSpacingValue.textContent = defaultStyles.letterSpacing + 'em';
   maxWidth.value = defaultStyles.maxWidth;
   maxWidthValue.textContent = defaultStyles.maxWidth + 'em';
-  linkColor.value = defaultStyles.linkColor;
-  linkColorValue.textContent = defaultStyles.linkColor;
   blockImages.checked = defaultStyles.blockImages;
   blockImagesValue.textContent = defaultStyles.blockImages;
 });
 
 // Listen for changes in the settings form
 const _manageDefaultStyles = ({ defaultStyles }) => {
-  var backgroundColor = document.getElementById('backgroundColor').value;
-  var color= document.getElementById('color').value;
+  var backgroundColorA = document.getElementById('backgroundColorA').value;
+  var colorA= document.getElementById('colorA').value;
+  var linkColorA= document.getElementById('linkColorA').value;
   var textAlign= document.getElementById('textAlign').value;
   var fontFamily= document.getElementById('fontFamily').value;
   var fontSize= document.getElementById('fontSize').value;
@@ -317,12 +322,14 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
   var wordSpacing= document.getElementById('wordSpacing').value;
   var letterSpacing= document.getElementById('letterSpacing').value;
   var maxWidth= document.getElementById('maxWidth').value;
-  var linkColor= document.getElementById('linkColor').value;
   var blockImages= document.getElementById('blockImages').checked;
   // update any changes to settings
   chrome.storage.sync.set({'defaultStyles':{
-    backgroundColor: backgroundColor,
-    color: color,
+    profileA:{
+      backgroundColor: backgroundColorA,
+      color: colorA,
+      linkColor:linkColorA
+    },
     textAlign:textAlign,
     fontFamily:fontFamily,
     fontSize:fontSize,
@@ -330,20 +337,32 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
     wordSpacing:wordSpacing,
     letterSpacing:letterSpacing,
     maxWidth:maxWidth,
-    linkColor:linkColor,
     blockImages:blockImages
   }})
 }
 
+// Debounce
+// function debounce(func, timeout = 300){
+//   let timer;
+//   return (...args) => {
+//     clearTimeout(timer);
+//     timer = setTimeout(() => { func.apply(this, args); }, timeout);
+//   };
+// }
+
 // Listen for specific events
 _optionsForm.addEventListener('change', _manageDefaultStyles);
-_optionsForm.addEventListener('input', _manageDefaultStyles);
+_optionsForm.addEventListener('change', _manageDefaultStyles);
 
 // update form UI values in real time
-_optionsForm.addEventListener('input', () => {
-  document.getElementById('backgroundColorValue').textContent = document.querySelector('#backgroundColor').value
-  document.getElementById('colorValue').textContent = document.querySelector('#color').value
-  document.getElementById('linkColorValue').textContent = document.querySelector('#linkColor').value
+_optionsForm.addEventListener('change', () => {
+  document.getElementById('backgroundColorValueA').textContent = document.querySelector('#backgroundColorA').value
+  document.getElementById('colorValueA').textContent = document.querySelector('#colorA').value
+  document.getElementById('linkColorValueA').textContent = document.querySelector('#linkColorA').value
+
+
+  document.getElementById('readerViewA').style.backgroundColor = document.querySelector('#backgroundColorA').value
+  document.getElementById('readerViewA').style.color = document.querySelector('#colorA').value
 });
 
 _optionsForm.addEventListener('change', () => {

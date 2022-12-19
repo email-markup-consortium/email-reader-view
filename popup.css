@@ -13,6 +13,13 @@ legend{
   font-weight: bold;
   font-size:1.2em;
 }
+button{
+  background: none;
+  border:.1em solid currentColor;
+  padding:.2em .4em;
+  margin:.2em;
+  font-weight: bold;
+}
 .selectStyles{
   display:table;
   border-spacing:.5em;
