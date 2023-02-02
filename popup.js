@@ -1,3 +1,18 @@
+function debounce (func, wait, immediate) {
+  let timeout
+  return function() {
+    let context = this, args = arguments
+    let later = function() {
+      timeout = null
+      if (!immediate) func.apply(context, args)
+    }
+    let callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) func.apply(context, args)
+  };
+}
+
 const _optionsForm = document.querySelector('#optionsForm')
 const _readerView = document.querySelector('#readerView')
 const _readerViewOff = document.querySelector('#readerViewOff')
@@ -13,15 +28,15 @@ const _tabManager = async (option) => {
 
 // input events on color input elements, enable reader view
 for(let el of [...document.querySelectorAll('input[type=color]')]){
-  el.addEventListener('input', () => {
+  el.addEventListener('input', debounce(function() {
     _tabManager(readerViewEmail)
-  })
+  }, 100)) 
 }
 
 // change events on input elements, enable reader view
-_optionsForm.addEventListener('change', () => {
+_optionsForm.addEventListener('change', debounce(function() {
   _tabManager(readerViewEmail)
-});
+}, 100));
 
 // click on button element, enable reader view
 _readerView.addEventListener('click', () => {
@@ -351,8 +366,8 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
 // }
 
 // Listen for specific events
-_optionsForm.addEventListener('change', _manageDefaultStyles);
-_optionsForm.addEventListener('change', _manageDefaultStyles);
+_optionsForm.addEventListener('change', debounce(_manageDefaultStyles, 100));
+_optionsForm.addEventListener('input', debounce(_manageDefaultStyles, 100));
 
 // update form UI values in real time
 _optionsForm.addEventListener('change', () => {
