@@ -14,7 +14,9 @@ function debounce (func, wait, immediate) {
 }
 
 const _optionsForm = document.querySelector('#optionsForm')
-const _readerView = document.querySelector('#readerView')
+const _readerViewA = document.querySelector('#readerViewA')
+const _readerViewB = document.querySelector('#readerViewB')
+const _readerViewC = document.querySelector('#readerViewC')
 const _readerViewOff = document.querySelector('#readerViewOff')
 
 // invoke the readerview 
@@ -39,7 +41,13 @@ _optionsForm.addEventListener('change', debounce(function() {
 }, 100));
 
 // click on button element, enable reader view
-_readerView.addEventListener('click', () => {
+_readerViewA.addEventListener('click', () => {
+  _tabManager(readerViewEmail)
+});
+_readerViewB.addEventListener('click', () => {
+  _tabManager(readerViewEmail)
+});
+_readerViewC.addEventListener('click', () => {
   _tabManager(readerViewEmail)
 });
 
@@ -113,13 +121,31 @@ function readerViewEmail() {
     .readerView.readerView .blockedImage + img {
         display: none;
     }
-    .readerView.readerView :is(a, a *) {
+    .readerView[data-readerviewprofile="A"]{
+      background:${defaultStyles.profileA.backgroundColor};
+      color: ${defaultStyles.profileA.color};
+    }
+    .readerView[data-readerviewprofile="A"] :is(a, a *) {
         text-decoration: underline;
         color:${defaultStyles.profileA.linkColor};
     }
+    .readerView[data-readerviewprofile="B"]{
+      background:${defaultStyles.profileB.backgroundColor};
+      color: ${defaultStyles.profileB.color};
+    }
+    .readerView[data-readerviewprofile="B"] :is(a, a *) {
+        text-decoration: underline;
+        color:${defaultStyles.profileB.linkColor};
+    }
+    .readerView[data-readerviewprofile="C"]{
+      background:${defaultStyles.profileC.backgroundColor};
+      color: ${defaultStyles.profileC.color};
+    }
+    .readerView[data-readerviewprofile="C"] :is(a, a *) {
+        text-decoration: underline;
+        color:${defaultStyles.profileC.linkColor};
+    }
     .readerView.readerView {
-      background:${defaultStyles.profileA.backgroundColor};
-      color: ${defaultStyles.profileA.color};
       text-align:${defaultStyles.textAlign};
       font-family:${defaultStyles.fontFamily};
       font-size:${defaultStyles.fontSize}rem;
@@ -179,6 +205,7 @@ function readerViewEmail() {
       const iframe = item.querySelector('iframe');
       if (iframe === null){
         item.classList.add("readerView");
+        item.setAttribute("data-readerViewProfile", defaultStyles.currentProfile);
         document.querySelector('#ervStyleElement').replaceChildren(styleSheet)
       } else {
         alert("Reader view does not yet support AMP email");
@@ -286,6 +313,7 @@ function readerViewOfff() {
   let wrapper = document.querySelectorAll(".readerView");
   for (let item of wrapper) {
     item.classList.remove("readerView");
+    item.removeAttribute("data-readerviewprofile");
   }
 
   // Remove added reader view elements
@@ -297,15 +325,51 @@ function readerViewOfff() {
 
 // Pull default styles from background.js and apply to controls in the popup
 chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
-  readerViewA.style.backgroundColor = defaultStyles.profileA.backgroundColor;
-  readerViewA.style.color = defaultStyles.profileA.color;
-  readerViewA.textContent = defaultStyles.profileA.name;
+  if (defaultStyles.currentProfile == 'A') {
+    readerViewA.setAttribute("checked", "");
+  }
+  if (defaultStyles.currentProfile == 'B') {
+    readerViewB.setAttribute("checked", "");
+  }
+  if (defaultStyles.currentProfile == 'C') {
+    readerViewC.setAttribute("checked", "");
+  }
+  // set button style
+  readerViewALabel.textContent = defaultStyles.profileA.name;
+  readerViewALabel.style.backgroundColor = defaultStyles.profileA.backgroundColor;
+  readerViewALabel.style.color = defaultStyles.profileA.color;
+
+  readerViewBLabel.textContent = defaultStyles.profileB.name;
+  readerViewBLabel.style.backgroundColor = defaultStyles.profileB.backgroundColor;
+  readerViewBLabel.style.color = defaultStyles.profileB.color;
+
+  readerViewCLabel.textContent = defaultStyles.profileC.name;
+  readerViewCLabel.style.backgroundColor = defaultStyles.profileC.backgroundColor;
+  readerViewCLabel.style.color = defaultStyles.profileC.color;
+  // set input values
+  nameA.value = defaultStyles.profileA.name
   backgroundColorA.value = defaultStyles.profileA.backgroundColor;
   backgroundColorValueA.textContent = defaultStyles.profileA.backgroundColor;
   colorA.value = defaultStyles.profileA.color;
   colorValueA.textContent = defaultStyles.profileA.color;
   linkColorA.value = defaultStyles.profileA.linkColor;
   linkColorValueA.textContent = defaultStyles.profileA.linkColor;
+
+  nameB.value = defaultStyles.profileB.name
+  backgroundColorB.value = defaultStyles.profileB.backgroundColor;
+  backgroundColorValueB.textContent = defaultStyles.profileB.backgroundColor;
+  colorB.value = defaultStyles.profileB.color;
+  colorValueB.textContent = defaultStyles.profileB.color;
+  linkColorB.value = defaultStyles.profileB.linkColor;
+  linkColorValueB.textContent = defaultStyles.profileB.linkColor;
+
+  nameC.value = defaultStyles.profileC.name
+  backgroundColorC.value = defaultStyles.profileC.backgroundColor;
+  backgroundColorValueC.textContent = defaultStyles.profileC.backgroundColor;
+  colorC.value = defaultStyles.profileC.color;
+  colorValueC.textContent = defaultStyles.profileC.color;
+  linkColorC.value = defaultStyles.profileC.linkColor;
+  linkColorValueC.textContent = defaultStyles.profileC.linkColor;
 
   fontSize.value = defaultStyles.fontSize;
   fontSizeValue.textContent = defaultStyles.fontSize + 'rem';
@@ -327,9 +391,19 @@ chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
 
 // Listen for changes in the settings form
 const _manageDefaultStyles = ({ defaultStyles }) => {
+  var currentProfile = document.querySelector('input[name="readerviewProfile"]:checked').value;
+  var nameA = document.getElementById('nameA').value;
   var backgroundColorA = document.getElementById('backgroundColorA').value;
   var colorA= document.getElementById('colorA').value;
   var linkColorA= document.getElementById('linkColorA').value;
+  var nameB = document.getElementById('nameB').value;
+  var backgroundColorB = document.getElementById('backgroundColorB').value;
+  var colorB= document.getElementById('colorB').value;
+  var linkColorB= document.getElementById('linkColorB').value;
+  var nameC = document.getElementById('nameC').value;
+  var backgroundColorC = document.getElementById('backgroundColorC').value;
+  var colorC= document.getElementById('colorC').value;
+  var linkColorC= document.getElementById('linkColorC').value;
   var textAlign= document.getElementById('textAlign').value;
   var fontFamily= document.getElementById('fontFamily').value;
   var fontSize= document.getElementById('fontSize').value;
@@ -338,12 +412,27 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
   var letterSpacing= document.getElementById('letterSpacing').value;
   var maxWidth= document.getElementById('maxWidth').value;
   var blockImages= document.getElementById('blockImages').checked;
+  
   // update any changes to settings
   chrome.storage.sync.set({'defaultStyles':{
+    currentProfile:currentProfile,
     profileA:{
+      name: nameA,
       backgroundColor: backgroundColorA,
       color: colorA,
       linkColor:linkColorA
+    },
+    profileB:{
+      name: nameB,
+      backgroundColor: backgroundColorB,
+      color: colorB,
+      linkColor:linkColorB
+    },
+    profileC:{
+      name: nameC,
+      backgroundColor: backgroundColorC,
+      color: colorC,
+      linkColor:linkColorC
     },
     textAlign:textAlign,
     fontFamily:fontFamily,
@@ -356,15 +445,6 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
   }})
 }
 
-// Debounce
-// function debounce(func, timeout = 300){
-//   let timer;
-//   return (...args) => {
-//     clearTimeout(timer);
-//     timer = setTimeout(() => { func.apply(this, args); }, timeout);
-//   };
-// }
-
 // Listen for specific events
 _optionsForm.addEventListener('change', debounce(_manageDefaultStyles, 100));
 _optionsForm.addEventListener('input', debounce(_manageDefaultStyles, 100));
@@ -374,10 +454,23 @@ _optionsForm.addEventListener('change', () => {
   document.getElementById('backgroundColorValueA').textContent = document.querySelector('#backgroundColorA').value
   document.getElementById('colorValueA').textContent = document.querySelector('#colorA').value
   document.getElementById('linkColorValueA').textContent = document.querySelector('#linkColorA').value
-
-
+  document.getElementById('readerViewA').textContent = document.querySelector('#nameA').value
   document.getElementById('readerViewA').style.backgroundColor = document.querySelector('#backgroundColorA').value
   document.getElementById('readerViewA').style.color = document.querySelector('#colorA').value
+
+  document.getElementById('backgroundColorValueB').textContent = document.querySelector('#backgroundColorB').value
+  document.getElementById('colorValueB').textContent = document.querySelector('#colorB').value
+  document.getElementById('linkColorValueB').textContent = document.querySelector('#linkColorB').value
+  document.getElementById('readerViewB').textContent = document.querySelector('#nameB').value
+  document.getElementById('readerViewB').style.backgroundColor = document.querySelector('#backgroundColorB').value
+  document.getElementById('readerViewB').style.color = document.querySelector('#colorB').value
+
+  document.getElementById('backgroundColorValueC').textContent = document.querySelector('#backgroundColorC').value
+  document.getElementById('colorValueC').textContent = document.querySelector('#colorC').value
+  document.getElementById('linkColorValueC').textContent = document.querySelector('#linkColorC').value
+  document.getElementById('readerViewC').textContent = document.querySelector('#nameC').value
+  document.getElementById('readerViewC').style.backgroundColor = document.querySelector('#backgroundColorC').value
+  document.getElementById('readerViewC').style.color = document.querySelector('#colorC').value
 });
 
 _optionsForm.addEventListener('change', () => {

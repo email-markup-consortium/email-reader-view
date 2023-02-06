@@ -1,4 +1,5 @@
 let defaultStyles = {
+  currentProfile:'A',
   profileA: { 
     name: 'Light',
     backgroundColor: '#eeeeee',

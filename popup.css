@@ -6,19 +6,45 @@ h1 img{
   height: 1.2em;
   margin-left: .5em;
 }
+.profiles{
+  margin:0;
+  padding:0;
+  display:grid;
+  text-align: center;
+}
+.profiles button{
+  grid-column:  1 / 4
+}
+menu:has(#readerViewA:checked) ~ .profileA,
+menu:has(#readerViewB:checked) ~ .profileB,
+menu:has(#readerViewC:checked) ~ .profileC{
+  display: block;
+}
+.button{
+  font-size: 1.2em;
+  border:.1em solid currentColor;
+  padding:.4em .5em;
+  margin:.2em;
+  font-weight: bold;
+}
+.button:focus-within{
+  outline:2px solid Highlight;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+.profiles input{
+  appearance: none;
+  -webkit-appearance: none;
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  opacity:0;
+}
 fieldset {
   margin-top: 1.5em;
 }
 legend{
   font-weight: bold;
   font-size:1.2em;
-}
-button{
-  background: none;
-  border:.1em solid currentColor;
-  padding:.2em .4em;
-  margin:.2em;
-  font-weight: bold;
 }
 .selectStyles{
   display:table;
