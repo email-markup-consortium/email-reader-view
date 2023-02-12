@@ -2,7 +2,7 @@ let defaultStyles = {
   currentProfile:'A',
   profileA: { 
     name: 'Light',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#FFFDD0',
     color: '#202020',
     linkColor: '#3101ee'
   },
