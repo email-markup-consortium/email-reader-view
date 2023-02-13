@@ -5,39 +5,110 @@
   </head>
   <body>
     <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
-    <button id="readerView">Apply reader View</button>
-    <button id="readerViewOff">Disable reader View</button>
     <form id="optionsForm">
-      <fieldset>
-        <legend>Page settings</legend>
+      <menu role="menubar" class="profiles">
+        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewA" value="A">
+        <label class="button" id="readerViewALabel" for="readerViewA">Light</label>
+        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewB" value="B">
+        <label class="button" id="readerViewBLabel" for="readerViewB">Dark</label>
+        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewC" value="C">
+        <label class="button" id="readerViewCLabel" for="readerViewC">Sepia</label>
+        <button class="button" id="readerViewOff">Disable reader View</button>
+      </menu>
+      <fieldset class="profileA" hidden>
+        <legend>Profile settings</legend>
         <div class="selectStyles">
           <label>
-            <span>Background: <span id="backgroundColorValue"></span></span>
+            <span>Name:</span>
             <span>
-              <input type="color" name="backgroundColor" id="backgroundColor">
+              <input type="text" name="nameA" id="nameA">
             </span>
           </label>
           <label>
-            <span>Width: <span id="maxWidthValue"></span></span>
+            <span>Background: <span id="backgroundColorValueA"></span></span>
             <span>
-              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
+              <input type="color" name="backgroundColorA" id="backgroundColorA">
+            </span>
+          </label>
+          <label>
+            <span>Text colour: <span id="colorValueA"></span></span>
+            <span>
+              <input type="color" name="colorA" id="colorA">
+            </span>
+          </label>
+          <label>
+            <span>Link colour: <span id="linkColorValueA"></span></span>
+            <span>
+              <input type="color" name="linkColorA" id="linkColorA">
             </span>
           </label>
         </div>
       </fieldset>
-      <fieldset>
-        <legend>Text settings</legend>
+      <fieldset class="profileB" hidden>
+        <legend>Profile settings</legend>
         <div class="selectStyles">
           <label>
-            <span>Text colour: <span id="colorValue"></span></span>
+            <span>Name:</span>
             <span>
-              <input type="color" name="color" id="color">
+              <input type="text" name="nameB" id="nameB">
             </span>
           </label>
           <label>
-            <span>Link colour: <span id="linkColorValue"></span></span>
+            <span>Background: <span id="backgroundColorValueB"></span></span>
             <span>
-              <input type="color" name="linkColor" id="linkColor">
+              <input type="color" name="backgroundColorB" id="backgroundColorB">
+            </span>
+          </label>
+          <label>
+            <span>Text colour: <span id="colorValueB"></span></span>
+            <span>
+              <input type="color" name="colorB" id="colorB">
+            </span>
+          </label>
+          <label>
+            <span>Link colour: <span id="linkColorValueB"></span></span>
+            <span>
+              <input type="color" name="linkColorB" id="linkColorB">
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset class="profileC" hidden>
+        <legend>Profile settings</legend>
+        <div class="selectStyles">
+          <label>
+            <span>Name:</span>
+            <span>
+              <input type="text" name="nameC" id="nameC">
+            </span>
+          </label>
+          <label>
+            <span>Background: <span id="backgroundColorValueC"></span></span>
+            <span>
+              <input type="color" name="backgroundColorC" id="backgroundColorC">
+            </span>
+          </label>
+          <label>
+            <span>Text colour: <span id="colorValueC"></span></span>
+            <span>
+              <input type="color" name="colorC" id="colorC">
+            </span>
+          </label>
+          <label>
+            <span>Link colour: <span id="linkColorValueC"></span></span>
+            <span>
+              <input type="color" name="linkColorC" id="linkColorC">
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <details>
+        <summary>General settings</summary>
+        <div class="selectStyles">
+          <label>
+            <span>Width: <span id="maxWidthValue"></span></span>
+            <span>
+              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
             </span>
           </label>
           <label>
@@ -85,11 +156,6 @@
               <input type="range" name="letterSpacing" id="letterSpacing"  min="0" max=".3" step=".02">
             </span>
           </label>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Image settings</legend>
-        <div class="selectStyles">
           <label>
             <span>Block images: <span id="blockImagesValue"></span></span>
             <span>
@@ -97,7 +163,7 @@
             </span>
           </label>
         </div>
-      </fieldset>
+      </details>
     </form>
     <p  class="emc-credit">Build by 
       <a href="https://emailmarkup.org/" target="_blank">

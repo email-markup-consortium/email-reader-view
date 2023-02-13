@@ -1,6 +1,23 @@
 let defaultStyles = {
-  backgroundColor: '#ffeedd',
-  color: '#332211',
+  currentProfile:'A',
+  profileA: { 
+    name: 'Light',
+    backgroundColor: '#FFFDD0',
+    color: '#202020',
+    linkColor: '#3101ee'
+  },
+  profileB: { 
+    name: 'Dark',
+    backgroundColor: '#202020',
+    color: '#eeeeee',
+    linkColor: '#8ab4f8'
+  },
+  profileC: { 
+    name: 'Sepia',
+    backgroundColor: '#ffeedd',
+    color: '#332211',
+    linkColor: '#3101ee'
+  },
   textAlign: 'start',
   fontFamily: 'sans-serif',
   fontSize: '1',
