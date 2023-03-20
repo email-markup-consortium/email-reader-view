@@ -146,7 +146,7 @@ function readerViewEmail() {
         color:${defaultStyles.profileC.linkColor};
     }
     .readerView.readerView {
-      text-align:${defaultStyles.textAlign};
+      text-align:start;
       font-family:${defaultStyles.fontFamily};
       font-size:${defaultStyles.fontSize}rem;
       line-height:${defaultStyles.lineHeight};
@@ -158,7 +158,7 @@ function readerViewEmail() {
       padding: 1em !important; /* override yahoo */
     }
     .readerView.readerView *{
-      text-align:${defaultStyles.textAlign};
+      text-align:start;
     }
     .readerView.readerView button{display:none} /* Outlook zoom button */
     `;
@@ -223,6 +223,10 @@ function readerViewEmail() {
       }
       if (item.getAttribute("aria-hidden") == 'true'){
         item.setAttribute("date-hidden", "");
+      }
+      // Remove old emoji before appling new ones
+      if (item.hasAttribute("data-erv-emoji")){
+        item.remove()
       }
       // Replace Gmail emoji with regular ones
       if (item.hasAttribute("data-emoji") && defaultStyles.blockImages == false){
@@ -373,8 +377,6 @@ chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
 
   fontSize.value = defaultStyles.fontSize;
   fontSizeValue.textContent = defaultStyles.fontSize + 'rem';
-  textAlign.value = defaultStyles.textAlign;
-  textAlignValue.textContent = defaultStyles.textAlign;
   fontFamily.value = defaultStyles.fontFamily;
   fontFamilyValue.textContent = defaultStyles.fontFamily;
   lineHeight.value = defaultStyles.lineHeight;
@@ -404,7 +406,6 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
   var backgroundColorC = document.getElementById('backgroundColorC').value;
   var colorC= document.getElementById('colorC').value;
   var linkColorC= document.getElementById('linkColorC').value;
-  var textAlign= document.getElementById('textAlign').value;
   var fontFamily= document.getElementById('fontFamily').value;
   var fontSize= document.getElementById('fontSize').value;
   var lineHeight= document.getElementById('lineHeight').value;
@@ -434,7 +435,6 @@ const _manageDefaultStyles = ({ defaultStyles }) => {
       color: colorC,
       linkColor:linkColorC
     },
-    textAlign:textAlign,
     fontFamily:fontFamily,
     fontSize:fontSize,
     lineHeight:lineHeight,
@@ -475,7 +475,6 @@ _optionsForm.addEventListener('change', () => {
 
 _optionsForm.addEventListener('change', () => {
   document.getElementById('fontFamilyValue').textContent = document.querySelector('#fontFamily').value
-  document.getElementById('textAlignValue').textContent = document.querySelector('#textAlign').value
   document.getElementById('maxWidthValue').textContent = document.querySelector('#maxWidth').value
   document.getElementById('fontSizeValue').textContent = document.querySelector('#fontSize').value
   document.getElementById('lineHeightValue').textContent = document.querySelector('#lineHeight').value
