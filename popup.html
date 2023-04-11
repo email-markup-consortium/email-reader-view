@@ -1,168 +1,172 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="popup.css">
-  </head>
-  <body>
-    <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
-    <form id="optionsForm">
-      <menu role="menubar" class="profiles">
-        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewA" value="A">
-        <label class="button" id="readerViewALabel" for="readerViewA">Light</label>
-        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewB" value="B">
-        <label class="button" id="readerViewBLabel" for="readerViewB">Dark</label>
-        <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewC" value="C">
-        <label class="button" id="readerViewCLabel" for="readerViewC">Sepia</label>
-        <button class="button" id="readerViewOff">Disable reader View</button>
-      </menu>
-      <fieldset class="profileA" hidden>
-        <legend>Profile settings</legend>
-        <div class="selectStyles">
-          <label>
-            <span>Name:</span>
-            <span>
-              <input type="text" name="nameA" id="nameA">
-            </span>
-          </label>
-          <label>
-            <span>Background: <span id="backgroundColorValueA"></span></span>
-            <span>
-              <input type="color" name="backgroundColorA" id="backgroundColorA">
-            </span>
-          </label>
-          <label>
-            <span>Text colour: <span id="colorValueA"></span></span>
-            <span>
-              <input type="color" name="colorA" id="colorA">
-            </span>
-          </label>
-          <label>
-            <span>Link colour: <span id="linkColorValueA"></span></span>
-            <span>
-              <input type="color" name="linkColorA" id="linkColorA">
-            </span>
-          </label>
-        </div>
-      </fieldset>
-      <fieldset class="profileB" hidden>
-        <legend>Profile settings</legend>
-        <div class="selectStyles">
-          <label>
-            <span>Name:</span>
-            <span>
-              <input type="text" name="nameB" id="nameB">
-            </span>
-          </label>
-          <label>
-            <span>Background: <span id="backgroundColorValueB"></span></span>
-            <span>
-              <input type="color" name="backgroundColorB" id="backgroundColorB">
-            </span>
-          </label>
-          <label>
-            <span>Text colour: <span id="colorValueB"></span></span>
-            <span>
-              <input type="color" name="colorB" id="colorB">
-            </span>
-          </label>
-          <label>
-            <span>Link colour: <span id="linkColorValueB"></span></span>
-            <span>
-              <input type="color" name="linkColorB" id="linkColorB">
-            </span>
-          </label>
-        </div>
-      </fieldset>
-      <fieldset class="profileC" hidden>
-        <legend>Profile settings</legend>
-        <div class="selectStyles">
-          <label>
-            <span>Name:</span>
-            <span>
-              <input type="text" name="nameC" id="nameC">
-            </span>
-          </label>
-          <label>
-            <span>Background: <span id="backgroundColorValueC"></span></span>
-            <span>
-              <input type="color" name="backgroundColorC" id="backgroundColorC">
-            </span>
-          </label>
-          <label>
-            <span>Text colour: <span id="colorValueC"></span></span>
-            <span>
-              <input type="color" name="colorC" id="colorC">
-            </span>
-          </label>
-          <label>
-            <span>Link colour: <span id="linkColorValueC"></span></span>
-            <span>
-              <input type="color" name="linkColorC" id="linkColorC">
-            </span>
-          </label>
-        </div>
-      </fieldset>
-      <details>
-        <summary>General settings</summary>
-        <div class="selectStyles">
-          <label>
-            <span>Width: <span id="maxWidthValue"></span></span>
-            <span>
-              <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
-            </span>
-          </label>
-          <label>
-            <span>Font family: <span id="fontFamilyValue"></span></span>
-            <span>
-              <select name="fontFamily" id="fontFamily">
-                <option value="serif">serif</option>
-                <option value="sans-serif">sans-serif</option>
-                <option value="monospace">monospace</option>
-                <option value="cursive">cursive</option>
-              </select>
-            </span>
-          </label>
-          <label>
-            <span>Font size: <span id="fontSizeValue"></span></span>
-            <span>
-              <input type="range" name="fontSize" id="fontSize" min=".5" max="3" step=".25">
-            </span>
-          </label>
-          <label>
-            <span>Line height: <span id="lineHeightValue"></span></span>
-            <span>
-              <input type="range" name="lineHeight" id="lineHeight" min="1" max="2" step=".1">
-            </span>
-          </label>
-          <label>
-            <span>Word spacing: <span id="wordSpacingValue"></span></span>
-            <span>
-              <input type="range" name="wordSpacing" id="wordSpacing" min="0" max="1" step=".1">
-            </span>
-          </label>
-          <label>
-            <span>Letter spacing: <span id="letterSpacingValue"></span></span>
-            <span>
-              <input type="range" name="letterSpacing" id="letterSpacing"  min="0" max=".3" step=".02">
-            </span>
-          </label>
-          <label>
-            <span>Block images: <span id="blockImagesValue"></span></span>
-            <span>
-              <input type="checkbox" name="blockImages" id="blockImages">
-            </span>
-          </label>
-        </div>
-      </details>
-    </form>
-    <p  class="emc-credit">Build by 
-      <a href="https://emailmarkup.org/" target="_blank">
-        <picture>
-          <source srcset="/images/EMC-Logo-W.svg" media="(prefers-color-scheme: dark)">
-          <img src="/images/EMC-Logo.svg" alt="Email Markup Consortium">
-        </picture>
-      </a>
-    </p>
-    <script src="popup.js"></script>
-  </body>
+
+<head>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
+  <form id="optionsForm">
+    <menu role="menubar" class="profiles">
+      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewA" value="A">
+      <label class="button" id="readerViewALabel" for="readerViewA">Light</label>
+      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewB" value="B">
+      <label class="button" id="readerViewBLabel" for="readerViewB">Dark</label>
+      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewC" value="C">
+      <label class="button" id="readerViewCLabel" for="readerViewC">Sepia</label>
+      <!-- <button class="button" id="readerViewOff">Disable reader View</button> -->
+      <button type="button" class="button" id="toggleReaderView">Enable reader view</button>
+    </menu>
+    <fieldset class="profileA" hidden>
+      <legend>Profile settings</legend>
+      <div class="selectStyles">
+        <label>
+          <span>Name:</span>
+          <span>
+            <input type="text" name="nameA" id="nameA">
+          </span>
+        </label>
+        <label>
+          <span>Background: <span id="backgroundColorValueA"></span></span>
+          <span>
+            <input type="color" name="backgroundColorA" id="backgroundColorA">
+          </span>
+        </label>
+        <label>
+          <span>Text colour: <span id="colorValueA"></span></span>
+          <span>
+            <input type="color" name="colorA" id="colorA">
+          </span>
+        </label>
+        <label>
+          <span>Link colour: <span id="linkColorValueA"></span></span>
+          <span>
+            <input type="color" name="linkColorA" id="linkColorA">
+          </span>
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="profileB" hidden>
+      <legend>Profile settings</legend>
+      <div class="selectStyles">
+        <label>
+          <span>Name:</span>
+          <span>
+            <input type="text" name="nameB" id="nameB">
+          </span>
+        </label>
+        <label>
+          <span>Background: <span id="backgroundColorValueB"></span></span>
+          <span>
+            <input type="color" name="backgroundColorB" id="backgroundColorB">
+          </span>
+        </label>
+        <label>
+          <span>Text colour: <span id="colorValueB"></span></span>
+          <span>
+            <input type="color" name="colorB" id="colorB">
+          </span>
+        </label>
+        <label>
+          <span>Link colour: <span id="linkColorValueB"></span></span>
+          <span>
+            <input type="color" name="linkColorB" id="linkColorB">
+          </span>
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="profileC" hidden>
+      <legend>Profile settings</legend>
+      <div class="selectStyles">
+        <label>
+          <span>Name:</span>
+          <span>
+            <input type="text" name="nameC" id="nameC">
+          </span>
+        </label>
+        <label>
+          <span>Background: <span id="backgroundColorValueC"></span></span>
+          <span>
+            <input type="color" name="backgroundColorC" id="backgroundColorC">
+          </span>
+        </label>
+        <label>
+          <span>Text colour: <span id="colorValueC"></span></span>
+          <span>
+            <input type="color" name="colorC" id="colorC">
+          </span>
+        </label>
+        <label>
+          <span>Link colour: <span id="linkColorValueC"></span></span>
+          <span>
+            <input type="color" name="linkColorC" id="linkColorC">
+          </span>
+        </label>
+      </div>
+    </fieldset>
+    <details>
+      <summary>General settings</summary>
+      <div class="selectStyles">
+        <label>
+          <span>Width: <span id="maxWidthValue"></span></span>
+          <span>
+            <input type="range" name="maxWidth" id="maxWidth" min="20" max="70" step=".5">
+          </span>
+        </label>
+        <label>
+          <span>Font family: <span id="fontFamilyValue"></span></span>
+          <span>
+            <select name="fontFamily" id="fontFamily">
+              <option value="serif">serif</option>
+              <option value="sans-serif">sans-serif</option>
+              <option value="monospace">monospace</option>
+              <option value="cursive">cursive</option>
+            </select>
+          </span>
+        </label>
+        <label>
+          <span>Font size: <span id="fontSizeValue"></span></span>
+          <span>
+            <input type="range" name="fontSize" id="fontSize" min=".5" max="3" step=".25">
+          </span>
+        </label>
+        <label>
+          <span>Line height: <span id="lineHeightValue"></span></span>
+          <span>
+            <input type="range" name="lineHeight" id="lineHeight" min="1" max="2" step=".1">
+          </span>
+        </label>
+        <label>
+          <span>Word spacing: <span id="wordSpacingValue"></span></span>
+          <span>
+            <input type="range" name="wordSpacing" id="wordSpacing" min="0" max="1" step=".1">
+          </span>
+        </label>
+        <label>
+          <span>Letter spacing: <span id="letterSpacingValue"></span></span>
+          <span>
+            <input type="range" name="letterSpacing" id="letterSpacing" min="0" max=".3" step=".02">
+          </span>
+        </label>
+        <label>
+          <span>Block images: <span id="blockImagesValue"></span></span>
+          <span>
+            <input type="checkbox" name="blockImages" id="blockImages">
+          </span>
+        </label>
+      </div>
+    </details>
+  </form>
+  <p class="emc-credit">Build by
+    <a href="https://emailmarkup.org/" target="_blank">
+      <picture>
+        <source srcset="/images/EMC-Logo-W.svg" media="(prefers-color-scheme: dark)">
+        <img src="/images/EMC-Logo.svg" alt="Email Markup Consortium">
+      </picture>
+    </a>
+  </p>
+  <script src="popup.js"></script>
+</body>
+
 </html>
