@@ -47,6 +47,8 @@ const toggleReaderView = (alreadyOn = false) => {
 }
 document.querySelector('#toggleReaderView').addEventListener('click', toggleReaderView)
 
+toggleReaderView(toggledOn)
+
 // input events on color input elements, enable reader view
 for (let el of [...document.querySelectorAll('input[type=color]')]) {
   el.addEventListener(
