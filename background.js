@@ -1,5 +1,4 @@
 let defaultStyles = {
-  isReaderViewEnabled: true,
   currentProfile: 'A',
   profileA: {
     name: 'Light',

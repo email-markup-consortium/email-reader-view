@@ -1,3 +1,25 @@
+// function to set and maintain the reader view status
+function setReaderViewStatus(status) {
+  chrome.storage.sync.set({ showEnableReaderViewButton: status })
+}
+
+function toggleReaderView() {
+  // this action is repeated and creating conflicts with logic, but works.  Need to refactor
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View' //update DOM
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', showEnableReaderViewButton) //update DOM
+    setReaderViewStatus(!showEnableReaderViewButton) // each click will toggle the reader view status
+    showEnableReaderViewButton ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // invoke the appropriate reader view function
+  })
+}
+
+document.querySelector('#toggleReaderView').addEventListener('click', () => {
+  toggleReaderView()
+})
+
+// instantiate the readerview button
+toggleReaderView()
+
 function debounce(func, wait, immediate) {
   let timeout
   return function () {
@@ -29,26 +51,6 @@ const _tabManager = async (option) => {
   })
 }
 
-let toggledOn = false
-const toggleReaderView = (alreadyOn = false) => {
-  if (alreadyOn == true) {
-    toggledOn = true
-  } else {
-    toggledOn = !toggledOn
-  }
-
-  if (toggledOn) {
-    document.querySelector('#toggleReaderView').textContent = 'Disable reader view'
-    _tabManager(readerViewEmail)
-  } else {
-    document.querySelector('#toggleReaderView').textContent = 'Enable reader view'
-    _tabManager(readerViewOfff)
-  }
-}
-document.querySelector('#toggleReaderView').addEventListener('click', toggleReaderView)
-
-toggleReaderView(toggledOn)
-
 // input events on color input elements, enable reader view
 for (let el of [...document.querySelectorAll('input[type=color]')]) {
   el.addEventListener(
@@ -69,22 +71,29 @@ _optionsForm.addEventListener(
 
 // click on button element, enable reader view
 _readerViewA.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  toggleReaderView(true)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 })
 _readerViewB.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  toggleReaderView(true)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 })
 _readerViewC.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  toggleReaderView(true)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 })
-
-// click on button element, disable reader view
-// _readerViewOff.addEventListener('click', () => {
-//   _tabManager(readerViewOfff)
-// })
 
 // Function will be executed as a content script inside the current page
 function readerViewEmail() {
@@ -357,7 +366,6 @@ function readerViewOfff() {
   }
 }
 
-// Pull default styles from background.js and apply to controls in the popup
 chrome.storage.sync.get('defaultStyles', ({ defaultStyles }) => {
   if (defaultStyles.currentProfile == 'A') {
     readerViewA.setAttribute('checked', '')
