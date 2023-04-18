@@ -13,11 +13,32 @@ function debounce (func, wait, immediate) {
   };
 }
 
+// function to set and maintain the reader view status
+function setReaderViewStatus(status) {
+  chrome.storage.sync.set({ showEnableReaderViewButton: status })
+}
+
+function toggleReaderView() {
+  // this action is repeated and creating conflicts with logic, but works.  Need to refactor
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View' //update DOM
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', showEnableReaderViewButton) //update DOM
+    showEnableReaderViewButton ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // invoke the appropriate reader view function
+    setReaderViewStatus(!showEnableReaderViewButton) // each click will toggle the reader view status
+  })
+}
+
+document.querySelector('#toggleReaderView').addEventListener('click', () => {
+  toggleReaderView()
+})
+
+// instantiate the readerview button
+toggleReaderView()
+
 const _optionsForm = document.querySelector('#optionsForm')
 const _readerViewA = document.querySelector('#readerViewA')
 const _readerViewB = document.querySelector('#readerViewB')
 const _readerViewC = document.querySelector('#readerViewC')
-const _readerViewOff = document.querySelector('#readerViewOff')
 
 // invoke the readerview 
 const _tabManager = async (option) => {
@@ -41,19 +62,30 @@ _optionsForm.addEventListener('change', debounce(function() {
 }, 100));
 
 // click on button element, enable reader view
+// this is repeated and creating conflicts with logic, but works. Need to refactor
 _readerViewA.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 });
 _readerViewB.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 });
 _readerViewC.addEventListener('click', () => {
+  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-});
-
-// click on button element, disable reader view
-_readerViewOff.addEventListener('click', () => {
-  _tabManager(readerViewOfff)
+  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
+    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
+    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
+  })
 });
 
 // Function will be executed as a content script inside the current page
