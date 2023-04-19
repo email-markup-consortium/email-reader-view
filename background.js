@@ -31,7 +31,6 @@ let defaultStyles = {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ defaultStyles });
   console.log(defaultStyles);
-  chrome.storage.sync.set({ showEnableReaderViewButton: true });
 });
 
 // Wrap in an onInstalled callback in order to avoid unnecessary work

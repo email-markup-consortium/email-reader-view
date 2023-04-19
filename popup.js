@@ -13,28 +13,6 @@ function debounce (func, wait, immediate) {
   };
 }
 
-// function to set and maintain the reader view status
-function setReaderViewStatus(status) {
-  chrome.storage.sync.set({ showEnableReaderViewButton: status })
-}
-
-function toggleReaderView() {
-  // this action is repeated and creating conflicts with logic, but works.  Need to refactor
-  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
-    document.querySelector('#toggleReaderView').textContent = showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View' //update DOM
-    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', showEnableReaderViewButton) //update DOM
-    showEnableReaderViewButton ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // invoke the appropriate reader view function
-    setReaderViewStatus(!showEnableReaderViewButton) // each click will toggle the reader view status
-  })
-}
-
-document.querySelector('#toggleReaderView').addEventListener('click', () => {
-  toggleReaderView()
-})
-
-// instantiate the readerview button
-toggleReaderView()
-
 const _optionsForm = document.querySelector('#optionsForm')
 const _readerViewA = document.querySelector('#readerViewA')
 const _readerViewB = document.querySelector('#readerViewB')
@@ -49,6 +27,37 @@ const _tabManager = async (option) => {
   });
 }
 
+const BUTTON_STATE = {
+  ENABLE: 'Enable Reader View',
+  DISABLE: 'Disable Reader View'
+}
+
+// set initial state of toggle button from local storage, defatult to true
+const toggleState = localStorage.getItem('toggleState') || 'true'
+
+// initialize the toggle button
+// can probably refactor without the data attribute, works for now
+const toggleBtn = document.querySelector('#toggleReaderView')
+toggleBtn.dataset.toggle = toggleState
+toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
+
+// attributes to apply when individual profiles are selected when calling readerViewEmail()
+const stateManagement = () => {
+  toggleBtn.textContent = BUTTON_STATE.DISABLE
+  toggleBtn.dataset.toggle = 'false'
+  localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
+}
+
+// main toggle event listener
+// need to refactor the logic here
+toggleBtn.addEventListener('click', () => {
+  toggleBtn.classList.toggle('active') // toggle class for style purposes
+  !JSON.parse(toggleBtn.dataset.toggle) ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // call the appropriate function to enable/disable reader view
+  toggleBtn.textContent = !JSON.parse(toggleBtn.dataset.toggle) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE // update the button text
+  toggleBtn.dataset.toggle = !JSON.parse(toggleBtn.dataset.toggle) // update the data attribute
+  localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
+})
+
 // input events on color input elements, enable reader view
 for(let el of [...document.querySelectorAll('input[type=color]')]){
   el.addEventListener('input', debounce(function() {
@@ -62,30 +71,17 @@ _optionsForm.addEventListener('change', debounce(function() {
 }, 100));
 
 // click on button element, enable reader view
-// this is repeated and creating conflicts with logic, but works. Need to refactor
 _readerViewA.addEventListener('click', () => {
-  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
-    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
-    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
-  })
+  stateManagement()
 });
 _readerViewB.addEventListener('click', () => {
-  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
-    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
-    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
-  })
+  stateManagement()
 });
 _readerViewC.addEventListener('click', () => {
-  setReaderViewStatus(true)
   _tabManager(readerViewEmail)
-  chrome.storage.sync.get('showEnableReaderViewButton', ({ showEnableReaderViewButton }) => {
-    document.querySelector('#toggleReaderView').textContent = !showEnableReaderViewButton ? 'Enable Reader View' : 'Disable Reader View'
-    document.querySelector('#toggleReaderView').setAttribute('data-showEnableReaderViewButton', !showEnableReaderViewButton)
-  })
+  stateManagement()
 });
 
 // Function will be executed as a content script inside the current page
