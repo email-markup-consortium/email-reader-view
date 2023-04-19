@@ -17,7 +17,6 @@ const _optionsForm = document.querySelector('#optionsForm')
 const _readerViewA = document.querySelector('#readerViewA')
 const _readerViewB = document.querySelector('#readerViewB')
 const _readerViewC = document.querySelector('#readerViewC')
-const _readerViewOff = document.querySelector('#readerViewOff')
 
 // invoke the readerview 
 const _tabManager = async (option) => {
@@ -27,6 +26,37 @@ const _tabManager = async (option) => {
     function: option,
   });
 }
+
+const BUTTON_STATE = {
+  ENABLE: 'Enable Reader View',
+  DISABLE: 'Disable Reader View'
+}
+
+// set initial state of toggle button from local storage, defatult to true
+const toggleState = localStorage.getItem('toggleState') || 'true'
+
+// initialize the toggle button
+// can probably refactor without the data attribute, works for now
+const toggleBtn = document.querySelector('#toggleReaderView')
+toggleBtn.dataset.toggle = toggleState
+toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
+
+// attributes to apply when individual profiles are selected when calling readerViewEmail()
+const stateManagement = () => {
+  toggleBtn.textContent = BUTTON_STATE.DISABLE
+  toggleBtn.dataset.toggle = 'false'
+  localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
+}
+
+// main toggle event listener
+// need to refactor the logic here
+toggleBtn.addEventListener('click', () => {
+  toggleBtn.classList.toggle('active') // toggle class for style purposes
+  !JSON.parse(toggleBtn.dataset.toggle) ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // call the appropriate function to enable/disable reader view
+  toggleBtn.textContent = !JSON.parse(toggleBtn.dataset.toggle) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE // update the button text
+  toggleBtn.dataset.toggle = !JSON.parse(toggleBtn.dataset.toggle) // update the data attribute
+  localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
+})
 
 // input events on color input elements, enable reader view
 for(let el of [...document.querySelectorAll('input[type=color]')]){
@@ -43,17 +73,15 @@ _optionsForm.addEventListener('change', debounce(function() {
 // click on button element, enable reader view
 _readerViewA.addEventListener('click', () => {
   _tabManager(readerViewEmail)
+  stateManagement()
 });
 _readerViewB.addEventListener('click', () => {
   _tabManager(readerViewEmail)
+  stateManagement()
 });
 _readerViewC.addEventListener('click', () => {
   _tabManager(readerViewEmail)
-});
-
-// click on button element, disable reader view
-_readerViewOff.addEventListener('click', () => {
-  _tabManager(readerViewOfff)
+  stateManagement()
 });
 
 // Function will be executed as a content script inside the current page
