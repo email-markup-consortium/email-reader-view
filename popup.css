@@ -13,18 +13,13 @@ h1 img{
   margin-left: .5em;
 }
 .profiles{
-  margin:0;
-  padding:0;
-  display:grid;
+  display:flex;
+  align-items: center;
   gap:0.5em;
-  text-align: center;
 }
-.profiles button{
-  grid-column:  1 / 4
-}
-menu:has(#readerViewA:checked) ~ .profileA,
-menu:has(#readerViewB:checked) ~ .profileB,
-menu:has(#readerViewC:checked) ~ .profileC{
+.profiles:has(#readerViewA:checked) ~ .profileA,
+.profiles:has(#readerViewB:checked) ~ .profileB,
+.profiles:has(#readerViewC:checked) ~ .profileC{
   display: block;
 }
 .button{
@@ -32,8 +27,32 @@ menu:has(#readerViewC:checked) ~ .profileC{
   border:.1em solid currentColor;
   padding:.5em 1em;
   font-weight: bold;
-  display: grid;
-  align-items: center;
+  width:100%;
+  text-align: center;
+}
+button.button{
+  width:15em;
+  border-radius:.4em;
+  display:block;
+  margin:.5em auto;
+  background-image:linear-gradient(hsl(236, 47%, 94%), hsl(236, 47%, 84%) 80%);
+  border:.1em solid hsl(185, 77%, 20%);
+  text-shadow: 1px 1px hsl(236, 47%, 84%), -1px -1px hsl(236, 47%, 94%);
+  color:#0a3d3d;
+}
+button.button:hover,
+button.button:focus-visible{
+  background-image:linear-gradient(hsl(236, 47%, 84%) 20%, hsl(236, 47%, 94%));
+}
+button.button.active{
+  background-image:linear-gradient(hsl(185, 77%, 27%) 20%, hsl(185, 77%, 22%));
+  color:#eee;
+  border:.1em solid hsl(185, 17%, 20%);
+  text-shadow: 1px 1px hsl(185, 77%, 20%), -1px -1px hsl(185, 77%, 27%);
+}
+button.button.active:hover,
+button.button.active:focus-visible{
+  background-image:linear-gradient(hsl(185, 77%, 22%), hsl(185, 77%, 27%) 80%);
 }
 input[role="menuitemradio"]:focus + .button{
   outline:2px solid Highlight;

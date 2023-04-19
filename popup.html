@@ -8,15 +8,16 @@
 <body>
   <h1>Email Reader View<img src="/images/email-reader.svg" alt=""></h1>
   <form id="optionsForm">
-    <menu role="menubar" class="profiles">
-      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewA" value="A">
+    <button type="button" class="button" id="toggleReaderView"></button>
+    <fieldset class="profiles">
+      <legend>Profile</legend>
+      <input type="radio" name="readerviewProfile" id="readerViewA" value="A">
       <label class="button" id="readerViewALabel" for="readerViewA">Light</label>
-      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewB" value="B">
+      <input type="radio" name="readerviewProfile" id="readerViewB" value="B">
       <label class="button" id="readerViewBLabel" for="readerViewB">Dark</label>
-      <input role="menuitemradio" type="radio" name="readerviewProfile" id="readerViewC" value="C">
+      <input type="radio" name="readerviewProfile" id="readerViewC" value="C">
       <label class="button" id="readerViewCLabel" for="readerViewC">Sepia</label>
-      <button type="button" class="button" id="toggleReaderView"></button>
-    </menu>
+    </fieldset>
     <fieldset class="profileA" hidden>
       <legend>Profile settings</legend>
       <div class="selectStyles">
