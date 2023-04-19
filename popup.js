@@ -35,9 +35,11 @@ const BUTTON_STATE = {
 // set initial state of toggle button from local storage, defatult to true
 const toggleState = localStorage.getItem('toggleState') || 'true'
 
+
 // initialize the toggle button
 // can probably refactor without the data attribute, works for now
 const toggleBtn = document.querySelector('#toggleReaderView')
+JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
 toggleBtn.dataset.toggle = toggleState
 toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
 
