@@ -35,9 +35,11 @@ const BUTTON_STATE = {
 // set initial state of toggle button from local storage, defatult to true
 const toggleState = localStorage.getItem('toggleState') || 'true'
 
+
 // initialize the toggle button
 // can probably refactor without the data attribute, works for now
 const toggleBtn = document.querySelector('#toggleReaderView')
+JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
 toggleBtn.dataset.toggle = toggleState
 toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
 
@@ -510,3 +512,15 @@ _optionsForm.addEventListener('change', () => {
   document.getElementById('letterSpacingValue').textContent = document.querySelector('#letterSpacing').value
   document.getElementById('blockImagesValue').textContent = document.querySelector('#blockImages').checked
 });
+
+// refactor this in the future
+// loop through all profiles, add event listeners, and update corresponding UI
+// values must match the profile name
+const profiles = Array.from(document.querySelectorAll('.profiles input'))
+for(let profile of profiles) {
+  document.querySelector(`fieldset.profile${profile.value}`).addEventListener('input', () => {
+    document.querySelector(`#readerView${profile.value}Label`).textContent = document.querySelector(`#name${profile.value}`).value
+    document.querySelector(`#readerView${profile.value}Label`).style.backgroundColor = document.querySelector(`#backgroundColor${profile.value}`).value
+    document.querySelector(`#readerView${profile.value}Label`).style.color = document.querySelector(`#color${profile.value}`).value
+  })
+}
