@@ -55,6 +55,9 @@ chrome.runtime.onInstalled.addListener(() => {
         }),
         new chrome.declarativeContent.PageStateMatcher({
           pageUrl: {hostSuffix: 'outlook.live.com'},
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: {hostSuffix: 'outlook.office.com'},
         })
       ],
       actions: [new chrome.declarativeContent.ShowAction()],
