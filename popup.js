@@ -209,7 +209,7 @@ function readerViewEmail() {
       }
     };
     // For Outlook.com
-    if (window.location.hostname === "outlook.live.com"){
+    if (window.location.hostname === "outlook.live.com" || window.location.hostname === "outlook.office.com"){
       wrapper = document.querySelectorAll("[aria-label='Message body']");
     };
     // For Yahoo
