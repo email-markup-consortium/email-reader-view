@@ -38,15 +38,19 @@ const toggleState = localStorage.getItem('toggleState') || 'true'
 
 // initialize the toggle button
 // can probably refactor without the data attribute, works for now
+// refactor this to be less DRY
 const toggleBtn = document.querySelector('#toggleReaderView')
 JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
 toggleBtn.dataset.toggle = toggleState
 toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
+console.log('toggleState', toggleState)
 
 // attributes to apply when individual profiles are selected when calling readerViewEmail()
+// refactor this to be less DRY
 const stateManagement = () => {
   toggleBtn.textContent = BUTTON_STATE.DISABLE
   toggleBtn.dataset.toggle = 'false'
+  JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
   localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
 }
 
@@ -473,6 +477,7 @@ document.querySelector('#resetStyles').addEventListener('click', () => {
     applyChromeStorageStyles(result.resetStyles)
   })
   _tabManager(readerViewEmail)
+  stateManagement()
 })
 
 function applyChromeStorageStyles(styles) {
