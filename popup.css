@@ -123,6 +123,9 @@ input[type="color"]::-webkit-color-swatch {
 label span span[id]{
   display:none
 }
+.resetStyles {
+  margin: 1em 0 0 0;
+}
 
 @media (prefers-color-scheme: dark) {
   :root{
