@@ -1,6 +1,9 @@
 *{
   box-sizing:border-box
 }
+hr {
+  margin: 0;
+}
 body{
   color:var(--text, #111);
   background-color:var(--background, #fefefe);
