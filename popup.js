@@ -482,13 +482,16 @@ document.querySelector('#resetStyles').addEventListener('click', () => {
 
 function applyChromeStorageStyles(styles) {
   if (styles.currentProfile == 'A') {
-    readerViewA.setAttribute("checked", "");
+    // readerViewA.setAttribute("checked", "");
+    document.querySelector('#readerViewA').checked = true
   }
   if (styles.currentProfile == 'B') {
-    readerViewB.setAttribute("checked", "");
+    // readerViewB.setAttribute("checked", "");
+    document.querySelector('#readerViewB').checked = true
   }
   if (styles.currentProfile == 'C') {
-    readerViewC.setAttribute("checked", "");
+    // readerViewC.setAttribute("checked", "");
+    document.querySelector('#readerViewC').checked = true
   }
   // set button style
   readerViewALabel.textContent = styles.profileA.name;
