@@ -205,7 +205,7 @@ function readerViewEmail() {
         wrapper = document.querySelectorAll("table.message > tbody > tr > td > table > tbody > tr:last-of-type > td > div");
       } else {
       // If inbox view
-        wrapper = document.querySelectorAll(".a3s");
+        wrapper = document.querySelectorAll(".ii");
       }
     };
     // For Outlook.com
