@@ -38,15 +38,19 @@ const toggleState = localStorage.getItem('toggleState') || 'true'
 
 // initialize the toggle button
 // can probably refactor without the data attribute, works for now
+// refactor this to be less DRY
 const toggleBtn = document.querySelector('#toggleReaderView')
 JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
 toggleBtn.dataset.toggle = toggleState
 toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
+console.log('toggleState', toggleState)
 
 // attributes to apply when individual profiles are selected when calling readerViewEmail()
+// refactor this to be less DRY
 const stateManagement = () => {
   toggleBtn.textContent = BUTTON_STATE.DISABLE
   toggleBtn.dataset.toggle = 'false'
+  JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
   localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
 }
 
@@ -359,66 +363,7 @@ function readerViewOfff() {
 
 // Pull default styles from background.js and apply to controls in the popup
 chrome.storage.sync.get("defaultStyles", ({ defaultStyles }) => {
-  if (defaultStyles.currentProfile == 'A') {
-    readerViewA.setAttribute("checked", "");
-  }
-  if (defaultStyles.currentProfile == 'B') {
-    readerViewB.setAttribute("checked", "");
-  }
-  if (defaultStyles.currentProfile == 'C') {
-    readerViewC.setAttribute("checked", "");
-  }
-  // set button style
-  readerViewALabel.textContent = defaultStyles.profileA.name;
-  readerViewALabel.style.backgroundColor = defaultStyles.profileA.backgroundColor;
-  readerViewALabel.style.color = defaultStyles.profileA.color;
-
-  readerViewBLabel.textContent = defaultStyles.profileB.name;
-  readerViewBLabel.style.backgroundColor = defaultStyles.profileB.backgroundColor;
-  readerViewBLabel.style.color = defaultStyles.profileB.color;
-
-  readerViewCLabel.textContent = defaultStyles.profileC.name;
-  readerViewCLabel.style.backgroundColor = defaultStyles.profileC.backgroundColor;
-  readerViewCLabel.style.color = defaultStyles.profileC.color;
-  // set input values
-  nameA.value = defaultStyles.profileA.name
-  backgroundColorA.value = defaultStyles.profileA.backgroundColor;
-  backgroundColorValueA.textContent = defaultStyles.profileA.backgroundColor;
-  colorA.value = defaultStyles.profileA.color;
-  colorValueA.textContent = defaultStyles.profileA.color;
-  linkColorA.value = defaultStyles.profileA.linkColor;
-  linkColorValueA.textContent = defaultStyles.profileA.linkColor;
-
-  nameB.value = defaultStyles.profileB.name
-  backgroundColorB.value = defaultStyles.profileB.backgroundColor;
-  backgroundColorValueB.textContent = defaultStyles.profileB.backgroundColor;
-  colorB.value = defaultStyles.profileB.color;
-  colorValueB.textContent = defaultStyles.profileB.color;
-  linkColorB.value = defaultStyles.profileB.linkColor;
-  linkColorValueB.textContent = defaultStyles.profileB.linkColor;
-
-  nameC.value = defaultStyles.profileC.name
-  backgroundColorC.value = defaultStyles.profileC.backgroundColor;
-  backgroundColorValueC.textContent = defaultStyles.profileC.backgroundColor;
-  colorC.value = defaultStyles.profileC.color;
-  colorValueC.textContent = defaultStyles.profileC.color;
-  linkColorC.value = defaultStyles.profileC.linkColor;
-  linkColorValueC.textContent = defaultStyles.profileC.linkColor;
-
-  fontSize.value = defaultStyles.fontSize;
-  fontSizeValue.textContent = defaultStyles.fontSize + 'rem';
-  fontFamily.value = defaultStyles.fontFamily;
-  fontFamilyValue.textContent = defaultStyles.fontFamily;
-  lineHeight.value = defaultStyles.lineHeight;
-  lineHeightValue.textContent = defaultStyles.lineHeight;
-  wordSpacing.value = defaultStyles.wordSpacing;
-  wordSpacingValue.textContent = defaultStyles.wordSpacing + 'em';
-  letterSpacing.value = defaultStyles.letterSpacing;
-  letterSpacingValue.textContent = defaultStyles.letterSpacing + 'em';
-  maxWidth.value = defaultStyles.maxWidth;
-  maxWidthValue.textContent = defaultStyles.maxWidth + 'em';
-  blockImages.checked = defaultStyles.blockImages;
-  blockImagesValue.textContent = defaultStyles.blockImages;
+  applyChromeStorageStyles(defaultStyles)
 });
 
 // Listen for changes in the settings form
@@ -523,4 +468,80 @@ for(let profile of profiles) {
     document.querySelector(`#readerView${profile.value}Label`).style.backgroundColor = document.querySelector(`#backgroundColor${profile.value}`).value
     document.querySelector(`#readerView${profile.value}Label`).style.color = document.querySelector(`#color${profile.value}`).value
   })
+}
+
+
+document.querySelector('#resetStyles').addEventListener('click', () => {
+  chrome.storage.sync.get('resetStyles', (result) => {
+    chrome.storage.sync.set({ 'defaultStyles': result.resetStyles })
+    applyChromeStorageStyles(result.resetStyles)
+  })
+  _tabManager(readerViewEmail)
+  stateManagement()
+})
+
+function applyChromeStorageStyles(styles) {
+  if (styles.currentProfile == 'A') {
+    // readerViewA.setAttribute("checked", "");
+    document.querySelector('#readerViewA').checked = true
+  }
+  if (styles.currentProfile == 'B') {
+    // readerViewB.setAttribute("checked", "");
+    document.querySelector('#readerViewB').checked = true
+  }
+  if (styles.currentProfile == 'C') {
+    // readerViewC.setAttribute("checked", "");
+    document.querySelector('#readerViewC').checked = true
+  }
+  // set button style
+  readerViewALabel.textContent = styles.profileA.name;
+  readerViewALabel.style.backgroundColor = styles.profileA.backgroundColor;
+  readerViewALabel.style.color = styles.profileA.color;
+
+  readerViewBLabel.textContent = styles.profileB.name;
+  readerViewBLabel.style.backgroundColor = styles.profileB.backgroundColor;
+  readerViewBLabel.style.color = styles.profileB.color;
+
+  readerViewCLabel.textContent = styles.profileC.name;
+  readerViewCLabel.style.backgroundColor = styles.profileC.backgroundColor;
+  readerViewCLabel.style.color = styles.profileC.color;
+  // set input values
+  nameA.value = styles.profileA.name
+  backgroundColorA.value = styles.profileA.backgroundColor;
+  backgroundColorValueA.textContent = styles.profileA.backgroundColor;
+  colorA.value = styles.profileA.color;
+  colorValueA.textContent = styles.profileA.color;
+  linkColorA.value = styles.profileA.linkColor;
+  linkColorValueA.textContent = styles.profileA.linkColor;
+
+  nameB.value = styles.profileB.name
+  backgroundColorB.value = styles.profileB.backgroundColor;
+  backgroundColorValueB.textContent = styles.profileB.backgroundColor;
+  colorB.value = styles.profileB.color;
+  colorValueB.textContent = styles.profileB.color;
+  linkColorB.value = styles.profileB.linkColor;
+  linkColorValueB.textContent = styles.profileB.linkColor;
+
+  nameC.value = styles.profileC.name
+  backgroundColorC.value = styles.profileC.backgroundColor;
+  backgroundColorValueC.textContent = styles.profileC.backgroundColor;
+  colorC.value = styles.profileC.color;
+  colorValueC.textContent = styles.profileC.color;
+  linkColorC.value = styles.profileC.linkColor;
+  linkColorValueC.textContent = styles.profileC.linkColor;
+
+  fontSize.value = styles.fontSize;
+  fontSizeValue.textContent = styles.fontSize + 'rem';
+  fontFamily.value = styles.fontFamily;
+  fontFamilyValue.textContent = styles.fontFamily;
+  lineHeight.value = styles.lineHeight;
+  lineHeightValue.textContent = styles.lineHeight;
+  wordSpacing.value = styles.wordSpacing;
+  wordSpacingValue.textContent = styles.wordSpacing + 'em';
+  letterSpacing.value = styles.letterSpacing;
+  letterSpacingValue.textContent = styles.letterSpacing + 'em';
+  maxWidth.value = styles.maxWidth;
+  maxWidthValue.textContent = styles.maxWidth + 'em';
+  blockImages.checked = styles.blockImages;
+  blockImagesValue.textContent = styles.blockImages;
 }

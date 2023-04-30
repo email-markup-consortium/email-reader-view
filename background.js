@@ -27,9 +27,12 @@ let defaultStyles = {
   linkColor: '#3101ee',
   blockImages: false
 };
-
+const resetStyles = {
+  ...defaultStyles,
+};
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ defaultStyles });
+  chrome.storage.sync.set({ resetStyles });
   console.log(defaultStyles);
 });
 

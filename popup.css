@@ -1,6 +1,9 @@
 *{
   box-sizing:border-box
 }
+hr {
+  margin: 0;
+}
 body{
   color:var(--text, #111);
   background-color:var(--background, #fefefe);
@@ -82,6 +85,9 @@ legend, summary{
 details[open] summary{
   margin-bottom: 1em;
 }
+details:hover {
+  cursor: pointer;
+}
 .selectStyles{
   display:table;
   border-spacing:.5em;
@@ -122,6 +128,9 @@ input[type="color"]::-webkit-color-swatch {
 /* hide values */
 label span span[id]{
   display:none
+}
+.resetStyles {
+  margin: 1em 0 0 0 ;
 }
 
 @media (prefers-color-scheme: dark) {
