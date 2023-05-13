@@ -35,34 +35,37 @@ const BUTTON_STATE = {
 // set initial state of toggle button from local storage, defatult to true
 const toggleState = localStorage.getItem('toggleState') || 'true'
 
+// the toggle button functionality resulted in duplicate logic
+// it can potentially be refactored to a single, reusable function 
+// but for now, it works.
 
-// initialize the toggle button
-// can probably refactor without the data attribute, works for now
-// refactor this to be less DRY
+// initialize the toggle button on popup open
 const toggleBtn = document.querySelector('#toggleReaderView')
 JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
 toggleBtn.dataset.toggle = toggleState
 toggleBtn.textContent = JSON.parse(toggleState) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE
-console.log('toggleState', toggleState)
 
-// attributes to apply when individual profiles are selected when calling readerViewEmail()
-// refactor this to be less DRY
+// attributes to apply when calling readerViewEmail() as individual profiles are selected 
 const stateManagement = () => {
-  toggleBtn.textContent = BUTTON_STATE.DISABLE
-  toggleBtn.dataset.toggle = 'false'
   JSON.parse(toggleState) ? toggleBtn.classList.remove('active') : toggleBtn.classList.add('active')
+  toggleBtn.dataset.toggle = 'false'
+  toggleBtn.textContent = BUTTON_STATE.DISABLE
   localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
 }
 
 // main toggle event listener
-// need to refactor the logic here
 toggleBtn.addEventListener('click', () => {
-  toggleBtn.classList.toggle('active') // toggle class for style purposes
-  !JSON.parse(toggleBtn.dataset.toggle) ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) // call the appropriate function to enable/disable reader view
-  toggleBtn.textContent = !JSON.parse(toggleBtn.dataset.toggle) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE // update the button text
-  toggleBtn.dataset.toggle = !JSON.parse(toggleBtn.dataset.toggle) // update the data attribute
+  !JSON.parse(toggleBtn.dataset.toggle) ? _tabManager(readerViewOfff) : _tabManager(readerViewEmail) 
+  toggleBtn.classList.toggle('active')
+  toggleBtn.textContent = !JSON.parse(toggleBtn.dataset.toggle) ? BUTTON_STATE.ENABLE : BUTTON_STATE.DISABLE 
+  toggleBtn.dataset.toggle = !JSON.parse(toggleBtn.dataset.toggle) 
   localStorage.setItem('toggleState', JSON.parse(toggleBtn.dataset.toggle))
 })
+
+// if toggleState is false, invoke the readerViewEmail function
+if (!JSON.parse(toggleState)) {
+_tabManager(readerViewEmail)
+}
 
 // input events on color input elements, enable reader view
 for(let el of [...document.querySelectorAll('input[type=color]')]){
