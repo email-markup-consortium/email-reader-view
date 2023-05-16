@@ -1,12 +1,17 @@
 {
   "name": "Email reader view",
   "description": "Display emails in a more readable format",
-  "version": "1.0",
+  "version": "1.0.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "activeTab", "scripting", "declarativeContent"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "declarativeContent"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
