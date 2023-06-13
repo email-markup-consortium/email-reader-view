@@ -163,24 +163,25 @@ function readerViewEmail() {
       color: ${defaultStyles.profileA.color};
     }
     .readerView[data-readerviewprofile="A"] :is(a, a *) {
-        text-decoration: underline;
-        color:${defaultStyles.profileA.linkColor};
+      color:${defaultStyles.profileA.linkColor};
     }
     .readerView[data-readerviewprofile="B"]{
       background:${defaultStyles.profileB.backgroundColor};
       color: ${defaultStyles.profileB.color};
     }
     .readerView[data-readerviewprofile="B"] :is(a, a *) {
-        text-decoration: underline;
-        color:${defaultStyles.profileB.linkColor};
+      color:${defaultStyles.profileB.linkColor};
     }
     .readerView[data-readerviewprofile="C"]{
       background:${defaultStyles.profileC.backgroundColor};
       color: ${defaultStyles.profileC.color};
     }
     .readerView[data-readerviewprofile="C"] :is(a, a *) {
-        text-decoration: underline;
-        color:${defaultStyles.profileC.linkColor};
+      color:${defaultStyles.profileC.linkColor};
+    }
+    .readerView.readerView :is(a, a *) {
+      text-decoration: underline;
+      word-break:break-word;
     }
     .readerView.readerView {
       text-align:start;
