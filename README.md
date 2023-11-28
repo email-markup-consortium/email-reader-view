@@ -1,8 +1,10 @@
 # Email Reader View
+Install the latest realese from the [Chrome Web Store](https://chromewebstore.google.com/detail/eekkbigfifdabokecancejangeoallck).
+
 Thanks for looking at this reader view browser extension, built for web based email clients. The idea is it will take the main content from an HTML email and replace the styles with something simpler, making it easier to read. It also allows  the user to adjust these simple styles to suit their own personal preferences.
 
 ## Set up
-This is not yet available on any browser extensions web store, however if you want to try it out before it's available, you can.
+This is available to install from the [Chrome Web Store](https://chromewebstore.google.com/detail/eekkbigfifdabokecancejangeoallck), however if you want to try it out before it's available, you can.
 1. Download this GitHub Repo.  
 	* If you're not too familiar with GitHub an easy way to do this is to click on the green `code` button near the top right of the repo page and select [download zip](https://github.com/email-markup-consortium/email-reader-view/archive/refs/heads/main.zip). Once downloaded, unzip that file.
 	* If you are familiar with GitHub, then pull down a local version of this repo using your prefered method. 
