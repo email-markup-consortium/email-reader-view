@@ -1,5 +1,5 @@
 # Email Reader View
-Install the latest realese from the [Chrome Web Store](https://chromewebstore.google.com/detail/eekkbigfifdabokecancejangeoallck).
+Install the latest release from the [Chrome Web Store](https://chromewebstore.google.com/detail/eekkbigfifdabokecancejangeoallck).
 
 Thanks for looking at this reader view browser extension, built for web based email clients. The idea is it will take the main content from an HTML email and replace the styles with something simpler, making it easier to read. It also allows  the user to adjust these simple styles to suit their own personal preferences.
 
